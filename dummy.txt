@@ -1,0 +1,29 @@
+| TEXT                                              {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Text);
+                                                                        temp->setValue(new std::string(*$1));
+                                                                        
+                                                                        $$->productions.push_back(temp);
+                                                                        
+                                                                    }
+                | SPACE                                             {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Text);
+                                                                        if(isPre){
+                                                                            temp->setValue(new std::string(*$1));
+                                                                        }
+
+                                                                        $$->productions.push_back(temp);
+                                                                    }
+                | NEWLINE                                           {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Text);
+                                                                        if(isPre){
+                                                                            temp->setValue(new std::string(*$1));
+                                                                        }
+
+                                                                        $$->productions.push_back(temp);
+                                                                    }
