@@ -16,6 +16,11 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QMouseEvent>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QPixmap>
+#include <QByteArray>
 #include "node.hpp"
 
 using namespace std;
@@ -38,6 +43,8 @@ public:
             textEdit->setTextInteractionFlags(Qt::NoTextInteraction);
         // label->setText("This is a very\n long text...");
         // label1->setText("This is a very\n long text...");
+        networkManager = new QNetworkAccessManager(this);
+        connect(networkManager, &QNetworkAccessManager::finished, this, &RenderTabWidget::onImageDownloaded);
 
         // // Create a layout
         QVBoxLayout *layout = new QVBoxLayout(this);
@@ -117,9 +124,34 @@ protected:
         QWidget::mouseMoveEvent(event); 
     }
 
+private slots:
+    void onImageDownloaded(QNetworkReply *reply) {
+        if (reply->error() == QNetworkReply::NoError) {
+            // Read the downloaded image data
+            QByteArray imageData = reply->readAll();
+
+            // Load the data into QImage
+            image.loadFromData(imageData);
+
+            // Trigger a repaint to display the image
+            update();
+        } else {
+            qDebug() << "Failed to download image:" << reply->errorString();
+        }
+
+        // Clean up
+        reply->deleteLater();
+    }
+
+
 private:
 
     QTextEdit *textEdit;
+    QNetworkAccessManager *networkManager;
+    QImage image;
+    QUrl imageUrl;
+    QString alt;
+    
     void renderTags(Node* temp, QTextCursor &cursor, QTextCharFormat &charForm){
         if(temp == NULL){
             return;
@@ -131,13 +163,88 @@ private:
         QTextBlockFormat blockFormat = cursor.blockFormat();
         cout<<temp->getType()<<" ";
         switch( temp->getType()){
-            case A:{
+            case Src:{
+                QString url = QString::fromStdString(*temp->getValue());
+                imageUrl = QUrl(url);
+                break;
+            }
+            case Alt:{
+                alt = QString::fromStdString(*temp->getValue());
+                break;
+            }
+            case Image:{
+                for(auto i : temp->productions){
+                    renderTags(i, cursor, charFormat);
+                }
+                break;
+            }
+            case ListElement:{
+                for (auto i : temp->productions) {
+                    renderTags(i, cursor, charFormat);
+                    if(i->getType() == BodyContent){
+                        QString qtitle = QString::fromStdString("\n");
+                        cursor.insertText(qtitle);  // Render list item text
+                    }
+                    
+                }
+                
+                break;
+            }
+            case OList: {  // Ordered List (OL)
+                // Set up the font for list items
+                QFont font = charFormat.font();
+                font.setPointSize(12);  // Set the font size for list items
+                charFormat.setFont(font);
+                cursor.mergeCharFormat(charFormat);
+
+                // Set up block format for indentation
+                blockFormat.setTopMargin(4);
+                blockFormat.setBottomMargin(4);
+                blockFormat.setTextIndent(20);  // Indentation for list items
+                cursor.setBlockFormat(blockFormat);
+
+                // Set up the list format for ordered list (numbers)
+                QTextListFormat listFormat;
+                listFormat.setStyle(QTextListFormat::ListDecimal);  // Numbers for ordered list
+                cursor.insertList(listFormat);  // Create the list in the document
+
+                // Loop through the list items and render them
+                for (auto i : temp->productions) {
+                    renderTags(i, cursor, charFormat);  // Render list item text
+                }
+                break;
+            }
+
+            case UList: {  // Unordered List (UL)
+                // Set up the font for list items
+                QFont font = charFormat.font();
+                font.setPointSize(12);  // Set the font size for list items
+                charFormat.setFont(font);
+                cursor.mergeCharFormat(charFormat);
+
+                // Set up block format for indentation
+                blockFormat.setTopMargin(4);
+                blockFormat.setBottomMargin(4);
+                blockFormat.setTextIndent(20);  // Indentation for list items
+                cursor.setBlockFormat(blockFormat);
+
+                // Set up the list format for unordered list (bullets)
+                QTextListFormat listFormat;
+                listFormat.setStyle(QTextListFormat::ListDisc);  // Bullets for unordered list
+                cursor.insertList(listFormat);  // Create the list in the document
+
+                // Loop through the list items and render them
+                for (auto i : temp->productions) {
+                    renderTags(i, cursor, charFormat);  // Render list item text
+                }
+                break;
+            }
+            case Anchor:{
                 QFont font = charFormat.font();
                 font.setUnderline(true);
                 charFormat.setFont(font);
                 charFormat.setForeground(Qt::blue);
                 QString link = QString::fromStdString(*temp->getValue());
-                cout<<*temp->getValue();
                 charFormat.setAnchor(true);
                 charFormat.setAnchorHref(link);
                 cursor.mergeCharFormat(charFormat);
@@ -221,17 +328,10 @@ private:
                 break;
             }
             case Paragraph:{
+                blockFormat.setBottomMargin(8);           
+                cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
                     renderTags(i, cursor, charFormat);
-                }
-                break;
-            }
-            case OList:{
-                QTextListFormat listFormat;
-                listFormat.setStyle(QTextListFormat::ListDisc);
-
-                for(auto node: temp->productions){
-                    renderListElements(node, cursor);
                 }
                 break;
             }
@@ -290,6 +390,23 @@ private:
             }
             case Newline:{
                 paintText(temp, cursor, charFormat);
+                break;
+            }
+            case Pre:{
+                QFont font = charFormat.font();
+                font.setFamily("Courier New");  // Use a monospace font
+                font.setPointSize(10);  // Set an appropriate font size for code or preformatted text
+                charFormat.setFont(font);
+                cursor.mergeCharFormat(charFormat);
+
+                // Set block format to ensure proper line spacing
+                blockFormat.setTopMargin(4);
+                blockFormat.setBottomMargin(4);
+                blockFormat.setTextIndent(0);  // No indentation
+                cursor.setBlockFormat(blockFormat);
+                for(auto i : temp->productions){
+                    renderTags(i, cursor, charFormat);
+                }
                 break;
             }
             default:{

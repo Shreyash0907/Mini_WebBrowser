@@ -60,7 +60,7 @@ enum type{
 class Node{
     private: 
         /// @brief Stores the value of the particular node.
-        std::string* value ;
+        std::string* value = new std::string("");
         /// @brief Stores the type of the Node of type symbols
         type nodeType;
         

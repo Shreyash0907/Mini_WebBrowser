@@ -315,11 +315,7 @@
                                                                     }
                 | A_BEGIN anchor A_END                              {
                                                                         $$ = new Node(SemanticTags);
-
-                                                                        Node* temp = new Node(A);
-                                                                        temp->productions.push_back($2);
-                                                                        
-                                                                        $$->productions.push_back(temp);
+                                                                        $$->productions.push_back($2);
                                                                     }
                 | IMG_BEGIN image RANGBRACKET                       {
                                                                         $$ = new Node(SemanticTags);
@@ -443,7 +439,7 @@
                                                                         $$ = new Node(TextTag);
 
                                                                         Node* temp = new Node(Text);
-
+                                                                        cout<<*$1<<" ";
                                                                         temp->setValue(new std::string(*$1));
                                                                         
                                                                         $$->productions.push_back(temp);
@@ -485,8 +481,8 @@
     
     listElements : listElements LI_BEGIN bodyContent LI_END         {
                                                                         $$ = new Node(ListElement);
-                                                                        $$->productions.push_back($3);
                                                                         $$->productions.push_back($1);
+                                                                        $$->productions.push_back($3);
                                                                     }
                  | LI_BEGIN bodyContent LI_END                      {
                                                                         $$ = new Node(ListElement);
@@ -516,11 +512,11 @@
 
     imageAttributes : SRC textContent                                           {
                                                                                     $$ = new Node(Src);
-                                                                                    $$->productions.push_back($2);
+                                                                                    $$->setValue($2->getValue());
                                                                                 }    
                     | ALT textContent                                           {
                                                                                     $$ = new Node(Alt);
-                                                                                    $$->productions.push_back($2);
+                                                                                    $$->setValue($2->getValue());
                                                                                 } 
                     ;
 

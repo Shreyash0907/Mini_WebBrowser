@@ -1,4 +1,5 @@
 QT += core gui
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -7,7 +8,8 @@ TEMPLATE = app
 
 # Add sources to the project
 SOURCES += main.cpp \
-           renderHTML.cpp
+           renderHTML.cpp \
+           fetch_html.cpp
            
 # Add headers (if needed)
 HEADERS += parser.hpp
@@ -31,3 +33,5 @@ SOURCES += parser.cpp
 
 # Make sure the generated files are part of the build process
 PRE_TARGETDEPS += lexer.cpp parser.cpp parser.hpp
+
+LIBS += -lcurl
