@@ -439,7 +439,7 @@
                                                                         $$ = new Node(TextTag);
 
                                                                         Node* temp = new Node(Text);
-                                                                        cout<<*$1<<" ";
+                                                                        cout<<*$1<<" "<<std::flush;
                                                                         temp->setValue(new std::string(*$1));
                                                                         
                                                                         $$->productions.push_back(temp);

@@ -590,10 +590,10 @@ static const yytype_int16 yyrline[] =
        0,   106,   106,   107,   113,   115,   121,   128,   135,   140,
      145,   148,   154,   158,   166,   174,   179,   185,   189,   193,
      197,   201,   205,   209,   220,   230,   240,   250,   260,   270,
-     278,   286,   298,   307,   316,   324,   332,   342,   353,   365,
-     370,   376,   386,   396,   407,   418,   427,   434,   438,   442,
-     451,   462,   474,   476,   480,   486,   491,   497,   507,   512,
-     517,   521
+     278,   286,   298,   307,   316,   320,   328,   338,   349,   361,
+     366,   372,   382,   392,   403,   414,   423,   430,   434,   438,
+     447,   458,   470,   472,   476,   482,   487,   493,   503,   508,
+     513,   517
 };
 #endif
 
@@ -1599,17 +1599,13 @@ yyreduce:
 #line 316 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
-
-                                                                        Node* temp = new Node(A);
-                                                                        temp->productions.push_back((yyvsp[-1].node));
-                                                                        
-                                                                        (yyval.node)->productions.push_back(temp);
+                                                                        (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1609 "parser.cpp"
+#line 1605 "parser.cpp"
     break;
 
   case 35: /* semanticTags: IMG_BEGIN image RANGBRACKET  */
-#line 324 "parser.y"
+#line 320 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1618,11 +1614,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1622 "parser.cpp"
+#line 1618 "parser.cpp"
     break;
 
   case 36: /* semanticTags: TEXT  */
-#line 332 "parser.y"
+#line 328 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1633,11 +1629,11 @@ yyreduce:
                                                                         (yyval.node)->productions.push_back(temp);
                                                                         
                                                                     }
-#line 1637 "parser.cpp"
+#line 1633 "parser.cpp"
     break;
 
   case 37: /* semanticTags: SPACE  */
-#line 342 "parser.y"
+#line 338 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         Node* temp = new Node(Space);
@@ -1649,11 +1645,11 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1653 "parser.cpp"
+#line 1649 "parser.cpp"
     break;
 
   case 38: /* semanticTags: NEWLINE  */
-#line 353 "parser.y"
+#line 349 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1664,30 +1660,30 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1668 "parser.cpp"
+#line 1664 "parser.cpp"
     break;
 
   case 39: /* textTags: textTag textTags  */
-#line 365 "parser.y"
+#line 361 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                     }
-#line 1678 "parser.cpp"
+#line 1674 "parser.cpp"
     break;
 
   case 40: /* textTags: textTag  */
-#line 370 "parser.y"
+#line 366 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                     }
-#line 1687 "parser.cpp"
+#line 1683 "parser.cpp"
     break;
 
   case 41: /* textTag: PARA_BEGIN textTags PARA_END  */
-#line 376 "parser.y"
+#line 372 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1698,11 +1694,11 @@ yyreduce:
                                                                         temp->productions.push_back(newline);
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1702 "parser.cpp"
+#line 1698 "parser.cpp"
     break;
 
   case 42: /* textTag: STRONG_BEGIN textTags STRONG_END  */
-#line 386 "parser.y"
+#line 382 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1713,11 +1709,11 @@ yyreduce:
                                                                         (yyval.node)->productions.push_back(temp);
                                                                         temp->productions.push_back(space);
                                                                     }
-#line 1717 "parser.cpp"
+#line 1713 "parser.cpp"
     break;
 
   case 43: /* textTag: EM_BEGIN textTags EM_END  */
-#line 396 "parser.y"
+#line 392 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1729,11 +1725,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1733 "parser.cpp"
+#line 1729 "parser.cpp"
     break;
 
   case 44: /* textTag: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END  */
-#line 407 "parser.y"
+#line 403 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1745,11 +1741,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1749 "parser.cpp"
+#line 1745 "parser.cpp"
     break;
 
   case 45: /* textTag: PRE_BEGIN pretag textTags PRE_END  */
-#line 418 "parser.y"
+#line 414 "parser.y"
                                                                     {
                                                                         isPre = false;
                                                                         (yyval.node) = new Node(TextTag);
@@ -1759,11 +1755,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1763 "parser.cpp"
+#line 1759 "parser.cpp"
     break;
 
   case 46: /* textTag: list  */
-#line 427 "parser.y"
+#line 423 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
@@ -1771,43 +1767,43 @@ yyreduce:
                                                                         newline->setValue(new std::string("\n"));
                                                                         (yyval.node)->productions.push_back(newline);
                                                                     }
-#line 1775 "parser.cpp"
+#line 1771 "parser.cpp"
     break;
 
   case 47: /* textTag: A_BEGIN anchor A_END  */
+#line 430 "parser.y"
+                                                                    {
+                                                                        (yyval.node) = new Node(TextTag);
+                                                                        (yyval.node)->productions.push_back((yyvsp[-1].node));
+                                                                    }
+#line 1780 "parser.cpp"
+    break;
+
+  case 48: /* textTag: IMG_BEGIN image RANGBRACKET  */
 #line 434 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1784 "parser.cpp"
-    break;
-
-  case 48: /* textTag: IMG_BEGIN image RANGBRACKET  */
-#line 438 "parser.y"
-                                                                    {
-                                                                        (yyval.node) = new Node(TextTag);
-                                                                        (yyval.node)->productions.push_back((yyvsp[-1].node));
-                                                                    }
-#line 1793 "parser.cpp"
+#line 1789 "parser.cpp"
     break;
 
   case 49: /* textTag: TEXT  */
-#line 442 "parser.y"
+#line 438 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
                                                                         Node* temp = new Node(Text);
-
+                                                                        cout<<*(yyvsp[0].str)<<" "<<std::flush;
                                                                         temp->setValue(new std::string(*(yyvsp[0].str)));
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1807 "parser.cpp"
+#line 1803 "parser.cpp"
     break;
 
   case 50: /* textTag: SPACE  */
-#line 451 "parser.y"
+#line 447 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
                                                                         Node* temp = new Node(Space);
@@ -1819,11 +1815,11 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1823 "parser.cpp"
+#line 1819 "parser.cpp"
     break;
 
   case 51: /* textTag: NEWLINE  */
-#line 462 "parser.y"
+#line 458 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1834,54 +1830,54 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1838 "parser.cpp"
+#line 1834 "parser.cpp"
     break;
 
   case 52: /* pretag: %empty  */
-#line 474 "parser.y"
+#line 470 "parser.y"
              {isPre = true;}
-#line 1844 "parser.cpp"
+#line 1840 "parser.cpp"
     break;
 
   case 53: /* list: OL_BEGIN listElements OL_END  */
-#line 476 "parser.y"
+#line 472 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(OList);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1853 "parser.cpp"
+#line 1849 "parser.cpp"
     break;
 
   case 54: /* list: UL_BEGIN listElements UL_END  */
-#line 480 "parser.y"
+#line 476 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(UList);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1862 "parser.cpp"
+#line 1858 "parser.cpp"
     break;
 
   case 55: /* listElements: listElements LI_BEGIN bodyContent LI_END  */
-#line 486 "parser.y"
+#line 482 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(ListElement);
-                                                                        (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                         (yyval.node)->productions.push_back((yyvsp[-3].node));
+                                                                        (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1872 "parser.cpp"
+#line 1868 "parser.cpp"
     break;
 
   case 56: /* listElements: LI_BEGIN bodyContent LI_END  */
-#line 491 "parser.y"
+#line 487 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(ListElement);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1881 "parser.cpp"
+#line 1877 "parser.cpp"
     break;
 
   case 57: /* anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent  */
-#line 497 "parser.y"
+#line 493 "parser.y"
                                                                                 {
                                                                                     (yyval.node) = new Node(Anchor);
                                                                                     (yyval.node)->setValue((yyvsp[-3].node)->getValue());
@@ -1890,47 +1886,47 @@ yyreduce:
                                                                                     (yyval.node)->productions.push_back(temp);
                                                                                     
                                                                                 }
-#line 1894 "parser.cpp"
+#line 1890 "parser.cpp"
     break;
 
   case 58: /* image: imageAttributes DOUBLEINVERTEDCOMMA image  */
-#line 507 "parser.y"
+#line 503 "parser.y"
                                                                     {
                                                                                     (yyval.node) = new Node(Image);
                                                                                     (yyval.node)->productions.push_back((yyvsp[-2].node));
                                                                                     (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                                 }
-#line 1904 "parser.cpp"
+#line 1900 "parser.cpp"
     break;
 
   case 59: /* image: %empty  */
-#line 512 "parser.y"
+#line 508 "parser.y"
                                                                                 {
                                                                                     (yyval.node) = new Node(Image);
                                                                                 }
-#line 1912 "parser.cpp"
+#line 1908 "parser.cpp"
     break;
 
   case 60: /* imageAttributes: SRC textContent  */
-#line 517 "parser.y"
+#line 513 "parser.y"
                                                                                 {
                                                                                     (yyval.node) = new Node(Src);
-                                                                                    (yyval.node)->productions.push_back((yyvsp[0].node));
+                                                                                    (yyval.node)->setValue((yyvsp[0].node)->getValue());
                                                                                 }
-#line 1921 "parser.cpp"
+#line 1917 "parser.cpp"
     break;
 
   case 61: /* imageAttributes: ALT textContent  */
-#line 521 "parser.y"
+#line 517 "parser.y"
                                                                                 {
                                                                                     (yyval.node) = new Node(Alt);
-                                                                                    (yyval.node)->productions.push_back((yyvsp[0].node));
+                                                                                    (yyval.node)->setValue((yyvsp[0].node)->getValue());
                                                                                 }
-#line 1930 "parser.cpp"
+#line 1926 "parser.cpp"
     break;
 
 
-#line 1934 "parser.cpp"
+#line 1930 "parser.cpp"
 
       default: break;
     }
@@ -2123,7 +2119,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 527 "parser.y"
+#line 523 "parser.y"
 
 
 

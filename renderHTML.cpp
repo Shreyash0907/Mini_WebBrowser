@@ -22,6 +22,10 @@
 #include <QPixmap>
 #include <QByteArray>
 #include "node.hpp"
+#include <QLineEdit>
+#include <QScrollArea>
+#include <QListWidget>
+
 
 using namespace std;
 // Custom Widget Class for Painting
@@ -51,6 +55,10 @@ public:
         layout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         QTextDocument *document = new QTextDocument(this);
         QTextCursor cursor(document);
+
+        QScrollArea *scrollArea = new QScrollArea(this);
+        scrollArea->setWidgetResizable(true);  // Make the content resize with the scroll area
+        scrollArea->setWidget(textEdit); 
         
 
         QTextCharFormat charFormat;
@@ -66,16 +74,17 @@ public:
         // layout->addWidget(label);
         // layout->addWidget(label1);
         textEdit->setDocument(document);
-        layout->addWidget(textEdit);
+        layout->addWidget(scrollArea);
         // Set the layout for this widget
         setLayout(layout);
         }
 
     static string getTitle(Node* temp){
         if(temp == NULL){
+            cout<<"null";
             return "";
         }
-
+        cout<<temp->getType()<<" ";
         if(temp->getType() == 3){
             return string(*temp->getValue());
         }
@@ -458,20 +467,38 @@ public:
         tabWidget = new QTabWidget(this);
         tabWidget->setWindowTitle("My Browser");
 
-        // tabWidget->addTab(new RenderTabWidget(), "Tab 1");
-
-        // tabWidget->addTab(new QWidget(), "Tab 2");
-
         tabWidget->setTabsClosable(true);
 
         connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
 
-        QPushButton *addTabButton = new QPushButton("Add Tab", this);
+        QPushButton *addTabButton = new QPushButton("Search", this);
+        addTabButton->setFixedWidth(150);
+        addTabButton->setFixedHeight(40);
+        QPushButton *historyTabButton = new QPushButton("History", this);
+        historyTabButton->setFixedWidth(150);
+        historyTabButton->setFixedHeight(40);
         connect(addTabButton, &QPushButton::clicked, this, &MainWindow::addTab);
+        connect(historyTabButton, &QPushButton::clicked, this, &MainWindow::showHistory);
 
+        // Create the QTextEdit section
+        lineEdit = new QLineEdit(this);
+        lineEdit->setPlaceholderText("Enter text here...");
+        lineEdit->setFixedHeight(40); // Set the same width as the button
+        QFont font = lineEdit->font();
+        font.setPointSize(14); // Set the font size to 14 (adjust as needed)
+        lineEdit->setFont(font);
+
+        // Create a horizontal layout for the button and line edit
+        QHBoxLayout *hLayout = new QHBoxLayout();
+        hLayout->addWidget(lineEdit);
+        hLayout->addWidget(addTabButton);
+        hLayout->addWidget(historyTabButton);
+
+        // Main vertical layout
         QVBoxLayout *layout = new QVBoxLayout(this);
+        layout->addLayout(hLayout); // Add the horizontal layout
         layout->addWidget(tabWidget);
-        layout->addWidget(addTabButton);
+
         setLayout(layout);
         resize(1700, 1000);
     }
@@ -488,8 +515,83 @@ private slots:
         }
     }
 
+    void showHistory(){
+        QWidget *newTab = new QWidget();
+    QVBoxLayout *layout = new QVBoxLayout(newTab);
+
+    // Create a QListWidget to display the QString keys
+    QListWidget *listWidget = new QListWidget(newTab);
+
+    // Iterate through the tabMap and add the QString keys to the QListWidget
+    for (const auto &pair : tabMap) {
+        QListWidgetItem *item = new QListWidgetItem(pair.first);
+    
+        // Set the font size for this individual item
+        QFont font = item->font();
+        font.setPointSize(14); 
+        // font.setBold(true);
+        item->setFont(font);
+
+        listWidget->addItem(item);
+    }
+
+    // Add the list widget to the layout
+    layout->addWidget(listWidget);
+
+    // Add the new tab to the QTabWidget
+    tabWidget->addTab(newTab, "History");
+    tabWidget->setCurrentWidget(newTab);
+    }
+
+
+    void refereshHistoryTab(){
+        // int index = tabWidget->indexOf(tabWidget->findChild<QWidget*>("listWidget"));
+        int index = -1;
+        for (int i = 0; i < tabWidget->count(); ++i) {
+            if (tabWidget->tabText(i) == "History") {
+                index = i;  // Return the index of the tab whose title matches
+            }
+        }
+
+        if(index != -1){
+            // if (tabMap == nullptr) return; // Check if listWidget has been created
+
+            QWidget *newTab = new QWidget();
+            QVBoxLayout *layout = new QVBoxLayout(newTab);
+
+            // Create a QListWidget to display the QString keys
+            QListWidget *listWidget = new QListWidget(newTab);
+            
+
+            // Iterate through the tabMap and add the QString keys to the QListWidget
+            for (const auto &pair : tabMap) {
+                
+                QListWidgetItem *item = new QListWidgetItem(pair.first);
+    
+                // Set the font size for this individual item
+                QFont font = item->font();
+                font.setPointSize(14); 
+                // font.setBold(true);
+                item->setFont(font);
+
+                listWidget->addItem(item);
+            }
+
+            // Add the list widget to the layout
+            layout->addWidget(listWidget);
+
+            tabWidget->removeTab(index);  // Remove the old tab at index 1
+            tabWidget->insertTab(index, newTab, "History");  // Insert the new tab at index 1
+            }
+        cout<<index<<" index of History"<<std::endl;
+
+    }
+
 private:
     QTabWidget *tabWidget;
+    QLineEdit *lineEdit;
+    std::map<QString, RenderTabWidget*> tabMap;
+    // QProcess *process;
 };
 
 // int main(int argc, char *argv[]) {

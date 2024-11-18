@@ -19,7 +19,7 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
     return size * nmemb;
 }
 
-void fetchAndCachePage( const std::string& url) {
+std::string fetchAndCachePage( const std::string& url) {
     std::string pageName = url.substr(url.find_last_of('/') + 1);
     if (pageName.empty() || pageName.find('.') == std::string::npos) {
         pageName = "index"; // Default to 'index' if no file name is present
@@ -39,7 +39,7 @@ void fetchAndCachePage( const std::string& url) {
             std::cout << line << std::endl;
         }
         std::cout << "\n";
-        return;
+        return cachePath;
     }
 
     // Fetch the content if not cached
@@ -67,11 +67,24 @@ void fetchAndCachePage( const std::string& url) {
 
         curl_easy_cleanup(curl);
     }
+    return cachePath;
 }
 
-void fetch_html_and_send(int socket_fd) {
+void fetch_html_and_send(int socket_fd, int parentSocket) {
+    char buff[1024];
+    ssize_t s;
+    if ((s = read(parentSocket, &buff, sizeof(buff))) == -1) {
+        perror("read");
+        return;
+    }
+    buff[s] = '\0';  // Null-terminate the string
+    std::string url(buff);  // Convert to std::string
+
+    std::cout<<"url to be used "<<url<<std::endl;
+    std::string pageName = fetchAndCachePage(url) ;
     // Read the HTML content from a file
-    std::ifstream file("html_page_1.html");
+    std::cout<<pageName<<" "<<std::flush;
+    std::ifstream file(pageName);
     if (!file) {
         perror("Error opening file");
         exit(1);
@@ -82,6 +95,11 @@ void fetch_html_and_send(int socket_fd) {
     std::string html_content = buffer.str();
     size_t content_length = html_content.size();
     size_t total_sent = 0;
+
+    if (write(socket_fd, &content_length, sizeof(content_length)) == -1) {
+        perror("write");
+        return;
+    }
 
     // Send the HTML content in chunks
     while (total_sent < content_length) {
@@ -98,7 +116,7 @@ void fetch_html_and_send(int socket_fd) {
         total_sent += chunk_size;
     }
 
-    std::cout << "Child (PID: " << getpid() << ") sent the entire HTML content from the file through the socket" << std::endl;
+    std::cout << "Child (PID: " << total_sent << ") sent the entire HTML content from the file through the socket" << std::endl;
 }
 
 // int main() {
