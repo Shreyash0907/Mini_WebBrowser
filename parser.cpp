@@ -175,26 +175,27 @@ enum yysymbol_kind_t
   YYSYMBOL_EQUAL = 66,                     /* EQUAL  */
   YYSYMBOL_DOUBLEINVERTEDCOMMA = 67,       /* DOUBLEINVERTEDCOMMA  */
   YYSYMBOL_WHITESPACE = 68,                /* WHITESPACE  */
-  YYSYMBOL_YYACCEPT = 69,                  /* $accept  */
-  YYSYMBOL_start = 70,                     /* start  */
-  YYSYMBOL_preabmle = 71,                  /* preabmle  */
-  YYSYMBOL_html = 72,                      /* html  */
-  YYSYMBOL_head = 73,                      /* head  */
-  YYSYMBOL_title = 74,                     /* title  */
-  YYSYMBOL_titleContent = 75,              /* titleContent  */
-  YYSYMBOL_body = 76,                      /* body  */
-  YYSYMBOL_textContent = 77,               /* textContent  */
-  YYSYMBOL_text = 78,                      /* text  */
-  YYSYMBOL_bodyContent = 79,               /* bodyContent  */
-  YYSYMBOL_semanticTags = 80,              /* semanticTags  */
-  YYSYMBOL_textTags = 81,                  /* textTags  */
-  YYSYMBOL_textTag = 82,                   /* textTag  */
-  YYSYMBOL_pretag = 83,                    /* pretag  */
-  YYSYMBOL_list = 84,                      /* list  */
-  YYSYMBOL_listElements = 85,              /* listElements  */
-  YYSYMBOL_anchor = 86,                    /* anchor  */
-  YYSYMBOL_image = 87,                     /* image  */
-  YYSYMBOL_imageAttributes = 88            /* imageAttributes  */
+  YYSYMBOL_PREAMBLE = 69,                  /* PREAMBLE  */
+  YYSYMBOL_YYACCEPT = 70,                  /* $accept  */
+  YYSYMBOL_start = 71,                     /* start  */
+  YYSYMBOL_preabmle = 72,                  /* preabmle  */
+  YYSYMBOL_html = 73,                      /* html  */
+  YYSYMBOL_head = 74,                      /* head  */
+  YYSYMBOL_title = 75,                     /* title  */
+  YYSYMBOL_titleContent = 76,              /* titleContent  */
+  YYSYMBOL_body = 77,                      /* body  */
+  YYSYMBOL_textContent = 78,               /* textContent  */
+  YYSYMBOL_text = 79,                      /* text  */
+  YYSYMBOL_bodyContent = 80,               /* bodyContent  */
+  YYSYMBOL_semanticTags = 81,              /* semanticTags  */
+  YYSYMBOL_textTags = 82,                  /* textTags  */
+  YYSYMBOL_textTag = 83,                   /* textTag  */
+  YYSYMBOL_pretag = 84,                    /* pretag  */
+  YYSYMBOL_list = 85,                      /* list  */
+  YYSYMBOL_listElements = 86,              /* listElements  */
+  YYSYMBOL_anchor = 87,                    /* anchor  */
+  YYSYMBOL_image = 88,                     /* image  */
+  YYSYMBOL_imageAttributes = 89            /* imageAttributes  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -520,21 +521,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  8
+#define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   133
+#define YYLAST   171
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  69
+#define YYNTOKENS  70
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  20
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  61
+#define YYNRULES  68
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  138
+#define YYNSTATES  157
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   323
+#define YYMAXUTOK   324
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -580,20 +581,20 @@ static const yytype_int8 yytranslate[] =
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
       45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
       55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
-      65,    66,    67,    68
+      65,    66,    67,    68,    69
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   106,   106,   107,   113,   115,   121,   128,   135,   140,
-     145,   148,   154,   158,   166,   174,   179,   185,   189,   193,
-     197,   201,   205,   209,   220,   230,   240,   250,   260,   270,
-     278,   286,   298,   307,   316,   320,   328,   338,   349,   361,
-     366,   372,   382,   392,   403,   414,   423,   430,   434,   438,
-     447,   458,   470,   472,   476,   482,   487,   493,   503,   508,
-     513,   517
+       0,   107,   107,   108,   114,   114,   116,   122,   129,   136,
+     141,   146,   149,   155,   159,   167,   175,   180,   186,   190,
+     194,   198,   202,   206,   210,   221,   231,   241,   251,   261,
+     271,   279,   287,   299,   308,   317,   321,   329,   337,   345,
+     353,   363,   374,   386,   391,   397,   407,   417,   428,   439,
+     448,   455,   459,   463,   471,   479,   487,   496,   507,   519,
+     521,   525,   531,   536,   542,   552,   557,   562,   566
 };
 #endif
 
@@ -622,8 +623,8 @@ static const char *const yytname[] =
   "PRE_BEGIN", "PRE_END", "CODE_BEGIN", "CODE_END", "OL_BEGIN", "OL_END",
   "TEXT", "SPACE", "NEWLINE", "HREF", "IMG_BEGIN", "SRC", "ALT",
   "LANGBRACKET", "RANGBRACKET", "EQUAL", "DOUBLEINVERTEDCOMMA",
-  "WHITESPACE", "$accept", "start", "preabmle", "html", "head", "title",
-  "titleContent", "body", "textContent", "text", "bodyContent",
+  "WHITESPACE", "PREAMBLE", "$accept", "start", "preabmle", "html", "head",
+  "title", "titleContent", "body", "textContent", "text", "bodyContent",
   "semanticTags", "textTags", "textTag", "pretag", "list", "listElements",
   "anchor", "image", "imageAttributes", YY_NULLPTR
 };
@@ -635,7 +636,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-56)
+#define YYPACT_NINF (-74)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -649,20 +650,22 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -2,     0,   -56,     3,    -2,   -56,    20,     6,   -56,   -56,
-     -56,    22,   -56,    39,   -16,    40,   -56,   -56,   -56,   -56,
-     -56,    65,   -56,    65,    33,    65,    52,    52,    52,    52,
-      52,    52,    65,    65,    65,    65,    -9,    52,    52,    52,
-     -56,    33,   -56,   -56,   -56,   -38,    42,    65,   -56,    41,
-      65,     5,    36,    52,    -9,    52,    52,    52,   -56,   -56,
-     -56,   -56,   -38,    37,    52,   -56,    34,    35,    32,    44,
-      31,    43,    45,    47,    29,   -56,    28,    27,    53,    23,
-      52,    -6,   -56,   -56,    12,    13,   -56,   -56,   -56,    69,
-     -56,    65,   -56,    59,    72,    57,    73,    68,    52,    56,
-     -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,
-     -56,   -36,   -56,   -56,   -56,   -56,    75,   -56,   -16,   -16,
-     -56,   -38,   -56,   109,   -56,   -56,   -56,   -56,   -56,    76,
-     -56,    64,   -56,   -56,   -56,   -56,    65,   -56
+      -2,     2,   -74,   -74,    10,    -2,   -74,    23,    38,   -74,
+     -74,   -74,    37,   -74,    44,   -33,    36,   -74,   -74,   -74,
+     -74,   -74,    83,   -74,    83,    31,    83,   110,   110,   110,
+     110,   110,   110,    83,    83,    83,    83,    -6,   110,   110,
+     110,   110,   110,   -74,   110,    31,   -74,   -74,   -74,   -35,
+      46,    83,   -74,    45,    83,    20,    40,   110,    -6,   110,
+     110,   110,   110,   110,   -74,   110,   -74,   -74,   -74,   -35,
+      39,   110,   -74,    41,    51,    34,    33,    32,    49,    30,
+      29,    47,   -74,    42,    35,    43,    53,    28,    55,   110,
+      24,   -12,   -74,   -74,    19,    21,   -74,   -74,   -74,    70,
+     -74,    83,   -74,    59,    50,    61,    48,    63,    65,    57,
+     110,    67,    26,   -74,   -74,   -74,   -74,   -74,   -74,   -74,
+     -74,   -74,   -74,   -74,   -36,   -74,   -74,   -74,   -74,   -74,
+     -74,    73,   -74,   -74,   -33,   -33,   -74,   -35,   -74,    77,
+     -74,   -74,   -74,   -74,   -74,   -74,   -74,    75,   -74,   -74,
+      52,   -74,   -74,   -74,   -74,    83,   -74
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -670,34 +673,36 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     4,     0,     0,     3,     0,     0,     1,     2,
-      10,     0,     5,     0,     8,     0,     7,    12,    13,    14,
-      11,     0,     6,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     4,     5,     0,     0,     3,     0,     0,     1,
+       2,    11,     0,     6,     0,     9,     0,     8,    13,    14,
+      15,    12,     0,     7,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-      52,     0,    36,    37,    38,    59,     0,    16,    33,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    52,    49,
-      50,    51,    59,     0,    40,    46,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    10,     0,     0,     0,     0,
-       0,     0,    10,    10,     0,     0,     9,    15,    18,     0,
-      54,     0,    17,     0,     0,     0,     0,     0,     0,     0,
-      23,    39,    24,    25,    26,    27,    28,    19,    20,    21,
-      22,     0,    34,    29,    30,    31,     0,    53,    60,    61,
-      35,    59,    56,     0,    41,    47,    42,    43,    44,     0,
-      48,     0,    32,    58,    55,    45,     0,    57
+       0,     0,     0,    59,     0,     0,    40,    41,    42,    66,
+       0,    17,    34,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    59,     0,    56,    57,    58,    66,
+       0,    44,    50,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    11,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    11,    11,     0,     0,    10,    16,    19,     0,
+      61,     0,    18,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    24,    43,    25,    26,    27,    28,    29,
+      20,    21,    22,    23,     0,    35,    30,    31,    37,    39,
+      32,     0,    38,    60,    67,    68,    36,    66,    63,     0,
+      45,    51,    46,    47,    53,    55,    48,     0,    54,    52,
+       0,    33,    65,    62,    49,     0,    64
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -56,   126,   -56,   -56,   -56,   -56,   -56,   -56,   -43,   -56,
-     -17,   -56,     7,   -56,    74,   -21,    90,    79,   -55,   -56
+     -74,    90,   -74,   -74,   -74,   -74,   -74,   -74,   -73,   -74,
+     -18,   -74,     9,   -74,    71,   -22,    56,    85,   -64,   -74
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     3,     4,     5,     7,    11,    13,    22,    14,    20,
-      46,    47,    63,    64,    80,    65,    51,    76,    84,    85
+       0,     4,     5,     6,     8,    12,    14,    23,    15,    21,
+      50,    51,    70,    71,    89,    72,    55,    83,    94,    95
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -705,82 +710,92 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      48,     1,    48,     8,    48,     6,    49,    99,    52,    91,
-      12,    48,    48,    48,    48,    71,    72,    73,    74,    90,
-      91,    17,    18,    19,    82,    83,    48,    10,    15,    48,
-      87,   131,   111,    89,    66,    67,    68,    69,    70,   118,
-     119,    17,    18,    19,    77,    78,    79,    16,    50,    21,
-     117,    75,    86,    88,    92,     2,   102,   100,   104,   103,
-      93,   106,    95,    96,    97,    24,   133,   110,   112,   113,
-      48,   101,   105,   115,   123,   107,    23,   120,    24,   108,
-     121,    53,    25,   109,    26,   122,    27,   116,    28,   124,
-      29,    54,    30,    55,    31,    56,    32,   114,    33,   126,
-      34,    57,    35,    58,    36,   129,    37,    41,    38,    59,
-      60,    61,   125,    62,    39,    48,    40,   127,   128,   137,
-      41,   130,    42,    43,    44,   134,    45,   132,   135,   136,
-       9,    81,    98,    94
+      52,     1,    52,   101,    52,   112,    53,     7,    56,   124,
+       9,    52,    52,    52,    52,    78,    79,    80,    81,   134,
+     135,    18,    19,    20,    18,    19,    20,    92,    93,    52,
+      11,   150,    52,    97,   100,   101,    99,    73,    74,    75,
+      76,    77,    13,    16,   133,    22,    54,    84,    85,    86,
+      87,    88,    17,    90,    82,     2,    96,    98,   102,   113,
+     117,   118,   119,   115,   121,   122,   103,     3,   105,   106,
+     107,   108,   109,   152,   111,   116,   129,   126,   132,    52,
+     114,   120,   125,   139,   136,   123,   138,   127,   137,   140,
+     141,   149,   143,   153,    24,    10,    25,     0,   131,   128,
+      26,    91,    27,   142,    28,   130,    29,   146,    30,   144,
+      31,     0,    32,   145,    33,     0,    34,   155,    35,   147,
+      36,   148,    37,    25,    38,   151,    39,   154,    40,     0,
+      41,     0,    42,    52,    43,   110,    44,   156,    45,    57,
+      46,    47,    48,   104,    49,     0,     0,     0,     0,    58,
+       0,    59,     0,    60,     0,    61,     0,    62,     0,    63,
+       0,    64,     0,    65,     0,    45,     0,    66,    67,    68,
+       0,    69
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-      21,     3,    23,     0,    25,     5,    23,    62,    25,    15,
-       4,    32,    33,    34,    35,    32,    33,    34,    35,    14,
-      15,    57,    58,    59,    62,    63,    47,     7,     6,    50,
-      47,    67,    75,    50,    27,    28,    29,    30,    31,    82,
-      83,    57,    58,    59,    37,    38,    39,     8,    15,     9,
-      56,    60,    10,    12,    18,    57,    22,    20,    26,    24,
-      53,    30,    55,    56,    57,    13,   121,    38,    40,    42,
-      91,    64,    28,    50,    91,    32,    11,    65,    13,    34,
-      67,    29,    17,    36,    19,    16,    21,    80,    23,    30,
-      25,    39,    27,    41,    29,    43,    31,    44,    33,    42,
-      35,    49,    37,    51,    39,    98,    41,    55,    43,    57,
-      58,    59,    40,    61,    49,   136,    51,    44,    50,   136,
-      55,    65,    57,    58,    59,    16,    61,    52,    52,    65,
-       4,    41,    58,    54
+      22,     3,    24,    15,    26,    69,    24,     5,    26,    82,
+       0,    33,    34,    35,    36,    33,    34,    35,    36,    92,
+      93,    57,    58,    59,    57,    58,    59,    62,    63,    51,
+       7,    67,    54,    51,    14,    15,    54,    28,    29,    30,
+      31,    32,     4,     6,    56,     9,    15,    38,    39,    40,
+      41,    42,     8,    44,    60,    57,    10,    12,    18,    20,
+      26,    28,    30,    22,    34,    36,    57,    69,    59,    60,
+      61,    62,    63,   137,    65,    24,    48,    42,    54,   101,
+      71,    32,    40,   101,    65,    38,    16,    44,    67,    30,
+      40,    65,    44,    16,    11,     5,    13,    -1,    89,    46,
+      17,    45,    19,    42,    21,    50,    23,    50,    25,    46,
+      27,    -1,    29,    48,    31,    -1,    33,    65,    35,   110,
+      37,    54,    39,    13,    41,    52,    43,    52,    45,    -1,
+      47,    -1,    49,   155,    51,    64,    53,   155,    55,    29,
+      57,    58,    59,    58,    61,    -1,    -1,    -1,    -1,    39,
+      -1,    41,    -1,    43,    -1,    45,    -1,    47,    -1,    49,
+      -1,    51,    -1,    53,    -1,    55,    -1,    57,    58,    59,
+      -1,    61
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    57,    70,    71,    72,     5,    73,     0,    70,
-       7,    74,     4,    75,    77,     6,     8,    57,    58,    59,
-      78,     9,    76,    11,    13,    17,    19,    21,    23,    25,
-      27,    29,    31,    33,    35,    37,    39,    41,    43,    49,
-      51,    55,    57,    58,    59,    61,    79,    80,    84,    79,
-      15,    85,    79,    29,    39,    41,    43,    49,    51,    57,
-      58,    59,    61,    81,    82,    84,    81,    81,    81,    81,
-      81,    79,    79,    79,    79,    60,    86,    81,    81,    81,
-      83,    85,    62,    63,    87,    88,    10,    79,    12,    79,
-      14,    15,    18,    81,    86,    81,    81,    81,    83,    87,
-      20,    81,    22,    24,    26,    28,    30,    32,    34,    36,
-      38,    77,    40,    42,    44,    50,    81,    56,    77,    77,
-      65,    67,    16,    79,    30,    40,    42,    44,    50,    81,
-      65,    67,    52,    87,    16,    52,    65,    79
+       0,     3,    57,    69,    71,    72,    73,     5,    74,     0,
+      71,     7,    75,     4,    76,    78,     6,     8,    57,    58,
+      59,    79,     9,    77,    11,    13,    17,    19,    21,    23,
+      25,    27,    29,    31,    33,    35,    37,    39,    41,    43,
+      45,    47,    49,    51,    53,    55,    57,    58,    59,    61,
+      80,    81,    85,    80,    15,    86,    80,    29,    39,    41,
+      43,    45,    47,    49,    51,    53,    57,    58,    59,    61,
+      82,    83,    85,    82,    82,    82,    82,    82,    80,    80,
+      80,    80,    60,    87,    82,    82,    82,    82,    82,    84,
+      82,    86,    62,    63,    88,    89,    10,    80,    12,    80,
+      14,    15,    18,    82,    87,    82,    82,    82,    82,    82,
+      84,    82,    88,    20,    82,    22,    24,    26,    28,    30,
+      32,    34,    36,    38,    78,    40,    42,    44,    46,    48,
+      50,    82,    54,    56,    78,    78,    65,    67,    16,    80,
+      30,    40,    42,    44,    46,    48,    50,    82,    54,    65,
+      67,    52,    88,    16,    52,    65,    80
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    69,    70,    70,    71,    72,    73,    74,    75,    76,
-      77,    77,    78,    78,    78,    79,    79,    80,    80,    80,
-      80,    80,    80,    80,    80,    80,    80,    80,    80,    80,
-      80,    80,    80,    80,    80,    80,    80,    80,    80,    81,
-      81,    82,    82,    82,    82,    82,    82,    82,    82,    82,
-      82,    82,    83,    84,    84,    85,    85,    86,    87,    87,
-      88,    88
+       0,    70,    71,    71,    72,    72,    73,    74,    75,    76,
+      77,    78,    78,    79,    79,    79,    80,    80,    81,    81,
+      81,    81,    81,    81,    81,    81,    81,    81,    81,    81,
+      81,    81,    81,    81,    81,    81,    81,    81,    81,    81,
+      81,    81,    81,    82,    82,    83,    83,    83,    83,    83,
+      83,    83,    83,    83,    83,    83,    83,    83,    83,    84,
+      85,    85,    86,    86,    87,    88,    88,    89,    89
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     2,     1,     1,     3,     4,     3,     1,     3,
-       0,     2,     1,     1,     1,     2,     1,     3,     3,     3,
+       0,     2,     2,     1,     1,     1,     3,     4,     3,     1,
+       3,     0,     2,     1,     1,     1,     2,     1,     3,     3,
        3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     4,     1,     3,     3,     1,     1,     1,     2,
-       1,     3,     3,     3,     3,     4,     1,     3,     3,     1,
-       1,     1,     0,     3,     3,     4,     3,     5,     3,     0,
-       2,     2
+       3,     3,     3,     4,     1,     3,     3,     3,     3,     3,
+       1,     1,     1,     2,     1,     3,     3,     3,     3,     4,
+       1,     3,     3,     3,     3,     3,     1,     1,     1,     0,
+       3,     3,     4,     3,     5,     3,     0,     2,     2
 };
 
 
@@ -1244,100 +1259,100 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* start: preabmle start  */
-#line 106 "parser.y"
+#line 107 "parser.y"
                                                                     {}
-#line 1250 "parser.cpp"
+#line 1265 "parser.cpp"
     break;
 
   case 3: /* start: html  */
-#line 107 "parser.y"
+#line 108 "parser.y"
                                                                     {
                                                                         root = new Node(Start);
                                                                         root->productions.push_back((yyvsp[0].node));
                                                                     }
-#line 1259 "parser.cpp"
+#line 1274 "parser.cpp"
     break;
 
-  case 4: /* preabmle: TEXT  */
-#line 113 "parser.y"
-                                                                   {}
-#line 1265 "parser.cpp"
+  case 5: /* preabmle: PREAMBLE  */
+#line 114 "parser.y"
+                                                                    {}
+#line 1280 "parser.cpp"
     break;
 
-  case 5: /* html: HTML_BEGIN head HTML_END  */
-#line 115 "parser.y"
+  case 6: /* html: HTML_BEGIN head HTML_END  */
+#line 116 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(Html);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1274 "parser.cpp"
+#line 1289 "parser.cpp"
     break;
 
-  case 6: /* head: HEAD_BEGIN title HEAD_END body  */
-#line 121 "parser.y"
+  case 7: /* head: HEAD_BEGIN title HEAD_END body  */
+#line 122 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(Head);
                                                                         (yyval.node)->productions.push_back((yyvsp[-2].node));
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                     }
-#line 1284 "parser.cpp"
+#line 1299 "parser.cpp"
     break;
 
-  case 7: /* title: TITLE_BEGIN titleContent TITLE_END  */
-#line 128 "parser.y"
+  case 8: /* title: TITLE_BEGIN titleContent TITLE_END  */
+#line 129 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(Title);
                                                                         (yyval.node)->setValue((yyvsp[-1].node)->getValue());
                                                                     }
-#line 1293 "parser.cpp"
+#line 1308 "parser.cpp"
     break;
 
-  case 8: /* titleContent: textContent  */
-#line 135 "parser.y"
+  case 9: /* titleContent: textContent  */
+#line 136 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TitleContent);
                                                                         (yyval.node)->setValue((yyvsp[0].node)->getValue());
                                                                     }
-#line 1302 "parser.cpp"
+#line 1317 "parser.cpp"
     break;
 
-  case 9: /* body: BODY_BEGIN bodyContent BODY_END  */
-#line 140 "parser.y"
+  case 10: /* body: BODY_BEGIN bodyContent BODY_END  */
+#line 141 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(Body);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1311 "parser.cpp"
+#line 1326 "parser.cpp"
     break;
 
-  case 10: /* textContent: %empty  */
-#line 145 "parser.y"
+  case 11: /* textContent: %empty  */
+#line 146 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextContent);
                                                                     }
-#line 1319 "parser.cpp"
+#line 1334 "parser.cpp"
     break;
 
-  case 11: /* textContent: textContent text  */
-#line 148 "parser.y"
+  case 12: /* textContent: textContent text  */
+#line 149 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextContent);
                                                                         (yyval.node)->setValue(new std::string(std::string(*(yyvsp[-1].node)->getValue()) + *(yyvsp[0].node)->getValue()));
                                                                     }
-#line 1328 "parser.cpp"
+#line 1343 "parser.cpp"
     break;
 
-  case 12: /* text: TEXT  */
-#line 154 "parser.y"
+  case 13: /* text: TEXT  */
+#line 155 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(Text);
                                                                         (yyval.node)->setValue(new std::string(*(yyvsp[0].str)));
                                                                     }
-#line 1337 "parser.cpp"
+#line 1352 "parser.cpp"
     break;
 
-  case 13: /* text: SPACE  */
-#line 158 "parser.y"
+  case 14: /* text: SPACE  */
+#line 159 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(Space);
                                                                         if(isPre){
@@ -1346,95 +1361,95 @@ yyreduce:
                                                                             (yyval.node)->setValue(new std::string(" "));
                                                                         }
                                                                     }
-#line 1350 "parser.cpp"
+#line 1365 "parser.cpp"
     break;
 
-  case 14: /* text: NEWLINE  */
-#line 166 "parser.y"
+  case 15: /* text: NEWLINE  */
+#line 167 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(Newline);
                                                                         if(isPre){
                                                                             (yyval.node)->setValue(new std::string(*(yyvsp[0].str)));
                                                                         }
                                                                     }
-#line 1361 "parser.cpp"
+#line 1376 "parser.cpp"
     break;
 
-  case 15: /* bodyContent: semanticTags bodyContent  */
-#line 174 "parser.y"
+  case 16: /* bodyContent: semanticTags bodyContent  */
+#line 175 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(BodyContent);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                     }
-#line 1371 "parser.cpp"
+#line 1386 "parser.cpp"
     break;
 
-  case 16: /* bodyContent: semanticTags  */
-#line 179 "parser.y"
+  case 17: /* bodyContent: semanticTags  */
+#line 180 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(BodyContent);
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));   
                                                                     }
-#line 1380 "parser.cpp"
+#line 1395 "parser.cpp"
     break;
 
-  case 17: /* semanticTags: HEADER_BEGIN bodyContent HEADER_END  */
-#line 185 "parser.y"
+  case 18: /* semanticTags: HEADER_BEGIN bodyContent HEADER_END  */
+#line 186 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1389 "parser.cpp"
+#line 1404 "parser.cpp"
     break;
 
-  case 18: /* semanticTags: NAV_BEGIN bodyContent NAV_END  */
-#line 189 "parser.y"
+  case 19: /* semanticTags: NAV_BEGIN bodyContent NAV_END  */
+#line 190 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1398 "parser.cpp"
+#line 1413 "parser.cpp"
     break;
 
-  case 19: /* semanticTags: SECTION_BEGIN bodyContent SECTION_END  */
-#line 193 "parser.y"
+  case 20: /* semanticTags: SECTION_BEGIN bodyContent SECTION_END  */
+#line 194 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1407 "parser.cpp"
+#line 1422 "parser.cpp"
     break;
 
-  case 20: /* semanticTags: ARTICLE_BEGIN bodyContent ARTICLE_END  */
-#line 197 "parser.y"
+  case 21: /* semanticTags: ARTICLE_BEGIN bodyContent ARTICLE_END  */
+#line 198 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1416 "parser.cpp"
+#line 1431 "parser.cpp"
     break;
 
-  case 21: /* semanticTags: ASIDE_BEGIN bodyContent ASIDE_END  */
-#line 201 "parser.y"
+  case 22: /* semanticTags: ASIDE_BEGIN bodyContent ASIDE_END  */
+#line 202 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1425 "parser.cpp"
+#line 1440 "parser.cpp"
     break;
 
-  case 22: /* semanticTags: FOOTER_BEGIN bodyContent FOOTER_END  */
-#line 205 "parser.y"
+  case 23: /* semanticTags: FOOTER_BEGIN bodyContent FOOTER_END  */
+#line 206 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1434 "parser.cpp"
+#line 1449 "parser.cpp"
     break;
 
-  case 23: /* semanticTags: H1_BEGIN textTags H1_END  */
-#line 209 "parser.y"
+  case 24: /* semanticTags: H1_BEGIN textTags H1_END  */
+#line 210 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1446,11 +1461,11 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1450 "parser.cpp"
+#line 1465 "parser.cpp"
     break;
 
-  case 24: /* semanticTags: H2_BEGIN textTags H2_END  */
-#line 220 "parser.y"
+  case 25: /* semanticTags: H2_BEGIN textTags H2_END  */
+#line 221 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1461,11 +1476,11 @@ yyreduce:
                                                                         temp->productions.push_back(newline);
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1465 "parser.cpp"
+#line 1480 "parser.cpp"
     break;
 
-  case 25: /* semanticTags: H3_BEGIN textTags H3_END  */
-#line 230 "parser.y"
+  case 26: /* semanticTags: H3_BEGIN textTags H3_END  */
+#line 231 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1476,11 +1491,11 @@ yyreduce:
                                                                         temp->productions.push_back(newline);
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1480 "parser.cpp"
+#line 1495 "parser.cpp"
     break;
 
-  case 26: /* semanticTags: H4_BEGIN textTags H4_END  */
-#line 240 "parser.y"
+  case 27: /* semanticTags: H4_BEGIN textTags H4_END  */
+#line 241 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1491,11 +1506,11 @@ yyreduce:
                                                                         temp->productions.push_back(newline);
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1495 "parser.cpp"
+#line 1510 "parser.cpp"
     break;
 
-  case 27: /* semanticTags: H5_BEGIN textTags H5_END  */
-#line 250 "parser.y"
+  case 28: /* semanticTags: H5_BEGIN textTags H5_END  */
+#line 251 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1506,11 +1521,11 @@ yyreduce:
                                                                         temp->productions.push_back(newline);
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1510 "parser.cpp"
+#line 1525 "parser.cpp"
     break;
 
-  case 28: /* semanticTags: PARA_BEGIN textTags PARA_END  */
-#line 260 "parser.y"
+  case 29: /* semanticTags: PARA_BEGIN textTags PARA_END  */
+#line 261 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1521,11 +1536,11 @@ yyreduce:
                                                                         temp->productions.push_back(newline);
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1525 "parser.cpp"
+#line 1540 "parser.cpp"
     break;
 
-  case 29: /* semanticTags: STRONG_BEGIN textTags STRONG_END  */
-#line 270 "parser.y"
+  case 30: /* semanticTags: STRONG_BEGIN textTags STRONG_END  */
+#line 271 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1534,11 +1549,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1538 "parser.cpp"
+#line 1553 "parser.cpp"
     break;
 
-  case 30: /* semanticTags: EM_BEGIN textTags EM_END  */
-#line 278 "parser.y"
+  case 31: /* semanticTags: EM_BEGIN textTags EM_END  */
+#line 279 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1547,11 +1562,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1551 "parser.cpp"
+#line 1566 "parser.cpp"
     break;
 
-  case 31: /* semanticTags: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END  */
-#line 286 "parser.y"
+  case 32: /* semanticTags: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END  */
+#line 287 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1564,11 +1579,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1568 "parser.cpp"
+#line 1583 "parser.cpp"
     break;
 
-  case 32: /* semanticTags: PRE_BEGIN pretag textTags PRE_END  */
-#line 298 "parser.y"
+  case 33: /* semanticTags: PRE_BEGIN pretag textTags PRE_END  */
+#line 299 "parser.y"
                                                                     {
                                                                         isPre = false;
                                                                         (yyval.node) = new Node(SemanticTags);
@@ -1578,11 +1593,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1582 "parser.cpp"
+#line 1597 "parser.cpp"
     break;
 
-  case 33: /* semanticTags: list  */
-#line 307 "parser.y"
+  case 34: /* semanticTags: list  */
+#line 308 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1592,20 +1607,20 @@ yyreduce:
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                         (yyval.node)->productions.push_back(newline);
                                                                     }
-#line 1596 "parser.cpp"
+#line 1611 "parser.cpp"
     break;
 
-  case 34: /* semanticTags: A_BEGIN anchor A_END  */
-#line 316 "parser.y"
+  case 35: /* semanticTags: A_BEGIN anchor A_END  */
+#line 317 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1605 "parser.cpp"
+#line 1620 "parser.cpp"
     break;
 
-  case 35: /* semanticTags: IMG_BEGIN image RANGBRACKET  */
-#line 320 "parser.y"
+  case 36: /* semanticTags: IMG_BEGIN image RANGBRACKET  */
+#line 321 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1614,11 +1629,50 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1618 "parser.cpp"
+#line 1633 "parser.cpp"
     break;
 
-  case 36: /* semanticTags: TEXT  */
-#line 328 "parser.y"
+  case 37: /* semanticTags: U_BEGIN textTags U_END  */
+#line 329 "parser.y"
+                                                                    {
+                                                                        (yyval.node) = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Em);
+                                                                        temp->productions.push_back((yyvsp[-1].node));
+                                                                        
+                                                                        (yyval.node)->productions.push_back(temp);
+                                                                    }
+#line 1646 "parser.cpp"
+    break;
+
+  case 38: /* semanticTags: CODE_BEGIN textTags CODE_END  */
+#line 337 "parser.y"
+                                                                          {
+                                                                        (yyval.node) = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Code);
+                                                                        temp->productions.push_back((yyvsp[-1].node));
+                                                                        
+                                                                        (yyval.node)->productions.push_back(temp);
+                                                                    }
+#line 1659 "parser.cpp"
+    break;
+
+  case 39: /* semanticTags: SMALL_BEGIN textTags SMALL_END  */
+#line 345 "parser.y"
+                                                                    {
+                                                                        (yyval.node) = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Small);
+                                                                        temp->productions.push_back((yyvsp[-1].node));
+                                                                        
+                                                                        (yyval.node)->productions.push_back(temp);
+                                                                    }
+#line 1672 "parser.cpp"
+    break;
+
+  case 40: /* semanticTags: TEXT  */
+#line 353 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1629,11 +1683,11 @@ yyreduce:
                                                                         (yyval.node)->productions.push_back(temp);
                                                                         
                                                                     }
-#line 1633 "parser.cpp"
+#line 1687 "parser.cpp"
     break;
 
-  case 37: /* semanticTags: SPACE  */
-#line 338 "parser.y"
+  case 41: /* semanticTags: SPACE  */
+#line 363 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
                                                                         Node* temp = new Node(Space);
@@ -1645,11 +1699,11 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1649 "parser.cpp"
+#line 1703 "parser.cpp"
     break;
 
-  case 38: /* semanticTags: NEWLINE  */
-#line 349 "parser.y"
+  case 42: /* semanticTags: NEWLINE  */
+#line 374 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(SemanticTags);
 
@@ -1660,30 +1714,30 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1664 "parser.cpp"
+#line 1718 "parser.cpp"
     break;
 
-  case 39: /* textTags: textTag textTags  */
-#line 361 "parser.y"
+  case 43: /* textTags: textTag textTags  */
+#line 386 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                     }
-#line 1674 "parser.cpp"
+#line 1728 "parser.cpp"
     break;
 
-  case 40: /* textTags: textTag  */
-#line 366 "parser.y"
+  case 44: /* textTags: textTag  */
+#line 391 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTags);
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                     }
-#line 1683 "parser.cpp"
+#line 1737 "parser.cpp"
     break;
 
-  case 41: /* textTag: PARA_BEGIN textTags PARA_END  */
-#line 372 "parser.y"
+  case 45: /* textTag: PARA_BEGIN textTags PARA_END  */
+#line 397 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1694,11 +1748,11 @@ yyreduce:
                                                                         temp->productions.push_back(newline);
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1698 "parser.cpp"
+#line 1752 "parser.cpp"
     break;
 
-  case 42: /* textTag: STRONG_BEGIN textTags STRONG_END  */
-#line 382 "parser.y"
+  case 46: /* textTag: STRONG_BEGIN textTags STRONG_END  */
+#line 407 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1709,11 +1763,11 @@ yyreduce:
                                                                         (yyval.node)->productions.push_back(temp);
                                                                         temp->productions.push_back(space);
                                                                     }
-#line 1713 "parser.cpp"
+#line 1767 "parser.cpp"
     break;
 
-  case 43: /* textTag: EM_BEGIN textTags EM_END  */
-#line 392 "parser.y"
+  case 47: /* textTag: EM_BEGIN textTags EM_END  */
+#line 417 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1725,11 +1779,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1729 "parser.cpp"
+#line 1783 "parser.cpp"
     break;
 
-  case 44: /* textTag: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END  */
-#line 403 "parser.y"
+  case 48: /* textTag: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END  */
+#line 428 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1741,11 +1795,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1745 "parser.cpp"
+#line 1799 "parser.cpp"
     break;
 
-  case 45: /* textTag: PRE_BEGIN pretag textTags PRE_END  */
-#line 414 "parser.y"
+  case 49: /* textTag: PRE_BEGIN pretag textTags PRE_END  */
+#line 439 "parser.y"
                                                                     {
                                                                         isPre = false;
                                                                         (yyval.node) = new Node(TextTag);
@@ -1755,11 +1809,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1759 "parser.cpp"
+#line 1813 "parser.cpp"
     break;
 
-  case 46: /* textTag: list  */
-#line 423 "parser.y"
+  case 50: /* textTag: list  */
+#line 448 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
                                                                         (yyval.node)->productions.push_back((yyvsp[0].node));
@@ -1767,29 +1821,68 @@ yyreduce:
                                                                         newline->setValue(new std::string("\n"));
                                                                         (yyval.node)->productions.push_back(newline);
                                                                     }
-#line 1771 "parser.cpp"
+#line 1825 "parser.cpp"
     break;
 
-  case 47: /* textTag: A_BEGIN anchor A_END  */
-#line 430 "parser.y"
+  case 51: /* textTag: A_BEGIN anchor A_END  */
+#line 455 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1780 "parser.cpp"
+#line 1834 "parser.cpp"
     break;
 
-  case 48: /* textTag: IMG_BEGIN image RANGBRACKET  */
-#line 434 "parser.y"
+  case 52: /* textTag: IMG_BEGIN image RANGBRACKET  */
+#line 459 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1789 "parser.cpp"
+#line 1843 "parser.cpp"
     break;
 
-  case 49: /* textTag: TEXT  */
-#line 438 "parser.y"
+  case 53: /* textTag: U_BEGIN textTags U_END  */
+#line 463 "parser.y"
+                                                                    {
+                                                                        (yyval.node) = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Em);
+                                                                        temp->productions.push_back((yyvsp[-1].node));
+                                                                        
+                                                                        (yyval.node)->productions.push_back(temp);
+                                                                    }
+#line 1856 "parser.cpp"
+    break;
+
+  case 54: /* textTag: CODE_BEGIN textTags CODE_END  */
+#line 471 "parser.y"
+                                                                          {
+                                                                        (yyval.node) = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Code);
+                                                                        temp->productions.push_back((yyvsp[-1].node));
+                                                                        
+                                                                        (yyval.node)->productions.push_back(temp);
+                                                                    }
+#line 1869 "parser.cpp"
+    break;
+
+  case 55: /* textTag: SMALL_BEGIN textTags SMALL_END  */
+#line 479 "parser.y"
+                                                                    {
+                                                                        (yyval.node) = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Small);
+                                                                        temp->productions.push_back((yyvsp[-1].node));
+                                                                        
+                                                                        (yyval.node)->productions.push_back(temp);
+                                                                    }
+#line 1882 "parser.cpp"
+    break;
+
+  case 56: /* textTag: TEXT  */
+#line 487 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1799,11 +1892,11 @@ yyreduce:
                                                                         
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1803 "parser.cpp"
+#line 1896 "parser.cpp"
     break;
 
-  case 50: /* textTag: SPACE  */
-#line 447 "parser.y"
+  case 57: /* textTag: SPACE  */
+#line 496 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
                                                                         Node* temp = new Node(Space);
@@ -1815,11 +1908,11 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1819 "parser.cpp"
+#line 1912 "parser.cpp"
     break;
 
-  case 51: /* textTag: NEWLINE  */
-#line 458 "parser.y"
+  case 58: /* textTag: NEWLINE  */
+#line 507 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(TextTag);
 
@@ -1830,54 +1923,54 @@ yyreduce:
 
                                                                         (yyval.node)->productions.push_back(temp);
                                                                     }
-#line 1834 "parser.cpp"
+#line 1927 "parser.cpp"
     break;
 
-  case 52: /* pretag: %empty  */
-#line 470 "parser.y"
+  case 59: /* pretag: %empty  */
+#line 519 "parser.y"
              {isPre = true;}
-#line 1840 "parser.cpp"
+#line 1933 "parser.cpp"
     break;
 
-  case 53: /* list: OL_BEGIN listElements OL_END  */
-#line 472 "parser.y"
+  case 60: /* list: OL_BEGIN listElements OL_END  */
+#line 521 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(OList);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1849 "parser.cpp"
+#line 1942 "parser.cpp"
     break;
 
-  case 54: /* list: UL_BEGIN listElements UL_END  */
-#line 476 "parser.y"
+  case 61: /* list: UL_BEGIN listElements UL_END  */
+#line 525 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(UList);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1858 "parser.cpp"
+#line 1951 "parser.cpp"
     break;
 
-  case 55: /* listElements: listElements LI_BEGIN bodyContent LI_END  */
-#line 482 "parser.y"
+  case 62: /* listElements: listElements LI_BEGIN bodyContent LI_END  */
+#line 531 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(ListElement);
                                                                         (yyval.node)->productions.push_back((yyvsp[-3].node));
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1868 "parser.cpp"
+#line 1961 "parser.cpp"
     break;
 
-  case 56: /* listElements: LI_BEGIN bodyContent LI_END  */
-#line 487 "parser.y"
+  case 63: /* listElements: LI_BEGIN bodyContent LI_END  */
+#line 536 "parser.y"
                                                                     {
                                                                         (yyval.node) = new Node(ListElement);
                                                                         (yyval.node)->productions.push_back((yyvsp[-1].node));
                                                                     }
-#line 1877 "parser.cpp"
+#line 1970 "parser.cpp"
     break;
 
-  case 57: /* anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent  */
-#line 493 "parser.y"
+  case 64: /* anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent  */
+#line 542 "parser.y"
                                                                                 {
                                                                                     (yyval.node) = new Node(Anchor);
                                                                                     (yyval.node)->setValue((yyvsp[-3].node)->getValue());
@@ -1886,47 +1979,47 @@ yyreduce:
                                                                                     (yyval.node)->productions.push_back(temp);
                                                                                     
                                                                                 }
-#line 1890 "parser.cpp"
+#line 1983 "parser.cpp"
     break;
 
-  case 58: /* image: imageAttributes DOUBLEINVERTEDCOMMA image  */
-#line 503 "parser.y"
+  case 65: /* image: imageAttributes DOUBLEINVERTEDCOMMA image  */
+#line 552 "parser.y"
                                                                     {
                                                                                     (yyval.node) = new Node(Image);
                                                                                     (yyval.node)->productions.push_back((yyvsp[-2].node));
                                                                                     (yyval.node)->productions.push_back((yyvsp[0].node));
                                                                                 }
-#line 1900 "parser.cpp"
+#line 1993 "parser.cpp"
     break;
 
-  case 59: /* image: %empty  */
-#line 508 "parser.y"
+  case 66: /* image: %empty  */
+#line 557 "parser.y"
                                                                                 {
                                                                                     (yyval.node) = new Node(Image);
                                                                                 }
-#line 1908 "parser.cpp"
+#line 2001 "parser.cpp"
     break;
 
-  case 60: /* imageAttributes: SRC textContent  */
-#line 513 "parser.y"
+  case 67: /* imageAttributes: SRC textContent  */
+#line 562 "parser.y"
                                                                                 {
                                                                                     (yyval.node) = new Node(Src);
                                                                                     (yyval.node)->setValue((yyvsp[0].node)->getValue());
                                                                                 }
-#line 1917 "parser.cpp"
+#line 2010 "parser.cpp"
     break;
 
-  case 61: /* imageAttributes: ALT textContent  */
-#line 517 "parser.y"
+  case 68: /* imageAttributes: ALT textContent  */
+#line 566 "parser.y"
                                                                                 {
                                                                                     (yyval.node) = new Node(Alt);
                                                                                     (yyval.node)->setValue((yyvsp[0].node)->getValue());
                                                                                 }
-#line 1926 "parser.cpp"
+#line 2019 "parser.cpp"
     break;
 
 
-#line 1930 "parser.cpp"
+#line 2023 "parser.cpp"
 
       default: break;
     }
@@ -2119,7 +2212,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 523 "parser.y"
+#line 572 "parser.y"
 
 
 

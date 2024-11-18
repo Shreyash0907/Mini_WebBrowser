@@ -93,6 +93,7 @@
 %token EQUAL
 %token DOUBLEINVERTEDCOMMA
 %token WHITESPACE
+%token PREAMBLE
 
 %type<node> start html head title titleContent body textContent text bodyContent semanticTags textTags textTag list listElements anchor image imageAttributes
 
@@ -110,7 +111,7 @@
                                                                     }
             ;
 
-    preabmle : TEXT                                                {}
+    preabmle : TEXT| PREAMBLE                                       {}
                 ;
     html : HTML_BEGIN head HTML_END                                 {
                                                                         $$ = new Node(Html);
@@ -325,6 +326,30 @@
                                                                         
                                                                         $$->productions.push_back(temp);
                                                                     }
+                | U_BEGIN textTags U_END                            {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Em);
+                                                                        temp->productions.push_back($2);
+                                                                        
+                                                                        $$->productions.push_back(temp);
+                                                                    }
+                | CODE_BEGIN textTags CODE_END                            {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Code);
+                                                                        temp->productions.push_back($2);
+                                                                        
+                                                                        $$->productions.push_back(temp);
+                                                                    }
+                | SMALL_BEGIN textTags SMALL_END                    {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Small);
+                                                                        temp->productions.push_back($2);
+                                                                        
+                                                                        $$->productions.push_back(temp);
+                                                                    }
                 | TEXT                                              {
                                                                         $$ = new Node(SemanticTags);
 
@@ -434,6 +459,30 @@
                 | IMG_BEGIN image RANGBRACKET                       {
                                                                         $$ = new Node(TextTag);
                                                                         $$->productions.push_back($2);
+                                                                    }
+                | U_BEGIN textTags U_END                            {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Em);
+                                                                        temp->productions.push_back($2);
+                                                                        
+                                                                        $$->productions.push_back(temp);
+                                                                    }
+                | CODE_BEGIN textTags CODE_END                            {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Code);
+                                                                        temp->productions.push_back($2);
+                                                                        
+                                                                        $$->productions.push_back(temp);
+                                                                    }
+                | SMALL_BEGIN textTags SMALL_END                    {
+                                                                        $$ = new Node(SemanticTags);
+
+                                                                        Node* temp = new Node(Small);
+                                                                        temp->productions.push_back($2);
+                                                                        
+                                                                        $$->productions.push_back(temp);
                                                                     }
                 | TEXT                                              {
                                                                         $$ = new Node(TextTag);

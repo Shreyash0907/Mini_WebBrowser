@@ -12,6 +12,7 @@
 #include "fetch_html.cpp"
 #include <QThread>
 #include <QProcess>
+#include <QSettings>
 
 #define BUFFER_SIZE 1024
 using json = nlohmann::json;
@@ -45,8 +46,6 @@ public slots:
         fetch_html_and_send(socket_fd, parentSocket);
     }
 
-signals:
-    // void finished();  // Signal to indicate task is complete
 
 private:
     int socket_fd;
@@ -63,18 +62,41 @@ private:
         std::string url(buff);  // Convert to std::string
 
         std::cout << "url to be used: " << url << std::endl;
-        std::string pageName = fetchAndCachePage(url);  // Placeholder for page name
-        std::ifstream file(pageName);
-        if (!file) {
-            perror("Error opening file");
-            exit(1);
-        }else{
-            cout<<"file opened"<<std::flush;
+
+        std::string pageName = url.substr(url.find_last_of('/') + 1);
+        if (pageName.empty() || pageName.find('.') == std::string::npos) {
+            pageName = "index"; // Default to 'index' if no file name is present
+        } else {
+            pageName = pageName.substr(0, pageName.find_last_of('.')); // Remove extension
         }
 
-        std::stringstream buffer;
-        buffer << file.rdbuf();  // Read the entire file into the stringstream
-        std::string html_content = buffer.str();
+        CURL* curl;
+        CURLcode res;
+        std::string readBuffer;
+
+        curl = curl_easy_init();
+        if (curl) {
+            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+            res = curl_easy_perform(curl);
+            if (res != CURLE_OK) {
+                std::cerr << "Failed to fetch " << url << ": " << curl_easy_strerror(res) << std::endl;
+                readBuffer = notFound;
+            } else {
+                std::cout << "Fetched and cached: " << pageName << std::endl;
+                std::cout << "Content of " << pageName << ":\n" << readBuffer << "\n\n";
+
+                if(readBuffer.find("Error response") != std::string::npos){
+                readBuffer = notFound;
+            }
+            }
+            
+            curl_easy_cleanup(curl);
+        }
+
+        std::string html_content = readBuffer;
         size_t content_length = html_content.size();
         size_t total_sent = 0;
 
@@ -98,7 +120,7 @@ private:
         }
 
         std::cout << "Child (PID: " << total_sent << ") sent the entire HTML content from the file through the socket" << std::endl;
-        // emit finished();  // Emit finished signal when the task is done
+
     }
 };
 
@@ -198,7 +220,6 @@ private:
         Node* temp = getRoot();
         
         std::string jsonSerializedTree = serializeTreeToJson(temp);
-        // cout<<jsonSerializedTree<<std::endl;
         sendData(parentSocket, jsonSerializedTree);
     }
     std::string serializeTreeToJson(Node* root) {
@@ -241,8 +262,8 @@ public slots:
 
 
 signals:
-    // void dataReceived(const std::string& data); // Signal when data is received
-    void urlSent(bool success);  // Signal when the URL is successfully sent
+   
+    void urlSent(bool success); 
 
 private :
     int socket_fd;
@@ -254,7 +275,7 @@ private :
         std::cout << "to be received from socket: " << socket << std::endl;
         if (read(socket, &dataSize, sizeof(dataSize)) == -1) {
             perror("read");
-            // emit dataReceived("");  // Emit empty string on error
+
             return;
         }
         std::cout << "size received" << std::flush;
@@ -269,7 +290,7 @@ private :
 
             if (result == -1) {
                 perror("read");
-                // emit dataReceived("");  // Emit empty string on error
+
                 return;
             }
 
@@ -279,7 +300,6 @@ private :
         // Deserialize the received data (example)
         Root = deserializeTreeFromJson(data);
 
-        // emit dataReceived(data);
     }
 
     Node* deserializeTreeFromJson(const std::string& data) {
@@ -290,10 +310,10 @@ private :
     void sendUrl(const std::string& url, int parentSocket){
         if (write(parentSocket, url.c_str(), url.size()) == -1) {
             perror("write");
-            // emit urlSent(false);  // Emit failure signal
+
         } else {
             std::cout << "URL sent" << std::flush;
-            // emit urlSent(true);  // Emit success signal
+
         }
     }
 
@@ -311,47 +331,7 @@ private :
     }
 };
 
-// void receiveData(int socket){
-//         size_t dataSize;
-//         std::cout << "to be received from socket: " << socket << std::endl;
-//         if (read(socket, &dataSize, sizeof(dataSize)) == -1) {
-//             perror("read");
-//             // emit dataReceived("");  // Emit empty string on error
-//             return;
-//         }
-//         std::cout << "size received" << std::flush;
 
-//         // Receive the data in chunks
-//         std::string data;
-//         data.resize(dataSize);
-//         size_t bytesReceived = 0;
-//         while (bytesReceived < dataSize) {
-//             size_t chunkSize = std::min<size_t>(4096, dataSize - bytesReceived);
-//             ssize_t result = read(socket, &data[bytesReceived], chunkSize);
-
-//             if (result == -1) {
-//                 perror("read");
-//                 // emit dataReceived("");  // Emit empty string on error
-//                 return;
-//             }
-
-//             bytesReceived += result;
-//         }
-
-//         // Deserialize the received data (example)
-//         Root = deserializeTreeFromJson(data);
-
-//         // emit dataReceived(data);
-//     }
-// void sendUrl(string url){
-//     // std::string url = "http://localhost:8000/html_dataset/html_page_2.html";
-//     if (write(parentSocket, url.c_str(), url.size()) == -1) {
-//         perror("write");
-//         return;
-//     } else {
-//         std::cout << "URL sent" << std::flush;
-//     }
-// }
 
 
 
@@ -360,7 +340,7 @@ Node* jsonToNode(const json& j) {
 
     Node* node = new Node(static_cast<type>(j["type"].get<int>()));
     node->setValue(new std::string(j["value"].get<std::string>()));
-    // cout<<*node->getValue()<<" ";
+
     for (auto& child : j["productions"]) {
         node->productions.push_back(jsonToNode(child));
     }
@@ -377,17 +357,13 @@ Node* deserializeTreeFromJson(const std::string& data) {
 void sendUrl(const std::string& url, int parentSocket){
         if (write(parentSocket, url.c_str(), url.size()) == -1) {
             perror("write");
-            // emit urlSent(false);  // Emit failure signal
+
         } else {
             std::cout << "URL sent" << std::flush;
-            // emit urlSent(true);  // Emit success signal
+
         }
     }
-// Helper function to deserialize a tree from JSON string
-// Node* deserializeTreeFromJson(const std::string& data) {
-//     json j = json::parse(data);
-//     return jsonToNode(j);
-// }
+
 
 void sendData(int socket, const std::string& data) {
     // Send the size of the data first
@@ -412,67 +388,6 @@ void sendData(int socket, const std::string& data) {
     cout<<"sent complete "<<std::flush;
 }
 
-
-// void receive_and_parse_html(int socket_fd, int parentSocket) {
-//     char buffer[BUFFER_SIZE];
-//     memset(buffer, 0, sizeof(buffer));
-//     size_t total_received = 0;
-//     FILE* temp_file = tmpfile();
-//     if (!temp_file) {
-//         perror("Error creating temporary file");
-//         exit(1);
-//     }
-
-//     size_t dataSize;
-//     if (read(socket_fd, &dataSize, sizeof(dataSize)) == -1) {
-//         perror("read");
-//         return ;
-//     }
-
-//     // Read the HTML content in chunks
-//     while (true) {
-//         cout<<"waiting "<<std::flush;
-//         ssize_t bytes_read = read(socket_fd, buffer, sizeof(buffer));
-//         cout<<"read "<<std::flush;
-//         if (bytes_read < 0) {
-//             perror("Error reading from socket");
-//             exit(1);
-//         } else if (bytes_read == 0) {
-//             // End of data
-//             break;
-//         }
-
-//         total_received += bytes_read;
-//         std::cout << "Parent received chunk: " <<total_received<< std::endl;
-//         fwrite(buffer, 1, bytes_read, temp_file);
-
-
-//         // Clear the buffer for the next chunk
-//         memset(buffer, 0, sizeof(buffer));
-//         if(total_received == dataSize){
-//             break;
-//         }
-//     }
-
-//     std::cout << "Parent received the entire HTML content: " << total_received << " bytes" << std::endl;
-    
-    
-//     // Now set the Flex input stream to the temporary file
-//     rewind(temp_file); 
-
-//     // Set the Flex input stream to the temporary file
-//     yyin = temp_file;
-
-//     // Now call the lexer to process the HTML content from the temp file
-//     yyparse();
-
-//     Node* temp = getRoot();
-    
-//     cout<<"jfksdj "<<std::flush;
-//     std::string jsonSerializedTree = serializeTreeToJson(temp);
-//     sendData(parentSocket, jsonSerializedTree);
-
-// }
 
 
 
@@ -513,23 +428,19 @@ void MainWindow::addTab() {
         
         
         QString url = lineEdit->text();
-        // sendUrl(url.toStdString());
         string URL = url.toStdString();
 
+        if(URL == ""){
+            return;
+        }
 
 
         FetchHtmlWorker *worker = new FetchHtmlWorker(child1ToChild2[1],  parentToChild1[0]);
         QThread *workerThread = new QThread;
 
-        worker->moveToThread(workerThread);  // Move worker to the new thread
-
-        // Connect signals and slots
+        worker->moveToThread(workerThread);  
         connect(workerThread, &QThread::started, worker, &FetchHtmlWorker::run);
-        // connect(worker, &FetchHtmlWorker::finished, workerThread, &QThread::quit);
-        // connect(worker, &FetchHtmlWorker::finished, worker, &QObject::deleteLater);
-        // connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
 
-        // Start the worker thread
        
 
 
@@ -539,21 +450,10 @@ void MainWindow::addTab() {
         worker1->moveToThread(workerThread1);
 
         connect(workerThread1, &QThread::started, worker1, &NetworkWorker::runReceiveAndParseHtml);
-        // connect(worker1, &NetworkWorker::finished, workerThread1, &QThread::quit);
-        // connect(worker1, &NetworkWorker::finished, worker1, &QObject::deleteLater);
-        // connect(workerThread1, &QThread::finished, workerThread1, &QObject::deleteLater);
 
-        
-
-        // RenderWorker *worker2 = new RenderWorker(parentToChild1[0] , parentToChild1[1], URL);
-        // QThread *workerThread2 = new QThread();
-
-        // worker2->moveToThread(workerThread2);
-        // connect(workerThread2, &QThread::started, worker2, &RenderWorker::sendUrlToFetcher);
-        // connect(workerThread2, &QThread::started, worker2, &RenderWorker::receiveDataFromParser);
         sendUrl(URL, parentToChild1[1]);
         workerThread->start();
-        // workerThread2->start();
+
         
         workerThread1->start();
 
@@ -569,24 +469,143 @@ void MainWindow::addTab() {
             cout<<"nulll herer";
         }
         Node* temp = Root;
-        RenderTabWidget* newTab = new RenderTabWidget(Root);
+        RenderTabWidget* newTab = new RenderTabWidget(Root,this);
         string title = RenderTabWidget::getTitle(temp);
         cout<<title<<"title";
         QString qtitle = QString::fromStdString(title);
         int tabIndex = tabWidget->count();
-        tabMap[qtitle] = newTab;
+        Time currentTime = std::chrono::system_clock::now();
+
+        if(title != "Not Found"){
+            tabMap.push_back(make_pair(qtitle, make_pair(URL,currentTime)));
+        }
         tabWidget->addTab( newTab, qtitle);
         tabWidget->setCurrentIndex(tabIndex);
+        tabWidget->setProperty("url", QVariant(QUrl(QString::fromStdString(URL))));
+        urlMap[title] = URL;
         refereshHistoryTab();
     }
+
+Node* getHead(){
+    return Root;
+}
+
+void MainWindow::renderHistory(string URL){
+
+        if(URL == ""){
+            URL = "dfsd";
+        }
+        cout<<URL<<" hrer url ";
+        FetchHtmlWorker *worker = new FetchHtmlWorker(child1ToChild2[1],  parentToChild1[0]);
+        QThread *workerThread = new QThread;
+
+        worker->moveToThread(workerThread); 
+        connect(workerThread, &QThread::started, worker, &FetchHtmlWorker::run);
+
+        NetworkWorker *worker1 = new NetworkWorker(child1ToChild2[0], child2ToParent[1]);
+        QThread *workerThread1 = new QThread();
+
+        worker1->moveToThread(workerThread1);
+
+        connect(workerThread1, &QThread::started, worker1, &NetworkWorker::runReceiveAndParseHtml);
+
+        sendUrl(URL, parentToChild1[1]);
+        workerThread->start();
+        // workerThread2->start();
+        
+        workerThread1->start();
+
+        receiveData(child2ToParent[0]);
+
+
+
+
+        if(Root == NULL){
+            cout<<"nulll herer";
+        }
+        Node* temp = Root;
+        RenderTabWidget* newTab = new RenderTabWidget(Root, this);
+        string title = RenderTabWidget::getTitle(temp);
+        cout<<title<<"title";
+        QString qtitle = QString::fromStdString(title);
+        int tabIndex = tabWidget->count();
+        Time currentTime = std::chrono::system_clock::now();
+
+        if(title != "Not Found"){
+            tabMap.push_back(make_pair(qtitle, make_pair(URL,currentTime)));
+        }
+        
+        tabWidget->addTab(newTab, qtitle);
+        tabWidget->setCurrentIndex(tabIndex);
+        tabWidget->setProperty("url", QVariant(QUrl(QString::fromStdString(URL))));
+        urlMap[title] = URL;
+        refereshHistoryTab();
+    }
+
+void MainWindow::renderAnchor(string URL){
+    if(URL == ""){
+            URL = "dfsd";
+        }
+        cout<<URL<<"  ";
+        FetchHtmlWorker *worker = new FetchHtmlWorker(child1ToChild2[1],  parentToChild1[0]);
+        QThread *workerThread = new QThread;
+
+        worker->moveToThread(workerThread);  
+        connect(workerThread, &QThread::started, worker, &FetchHtmlWorker::run);
+
+        NetworkWorker *worker1 = new NetworkWorker(child1ToChild2[0], child2ToParent[1]);
+        QThread *workerThread1 = new QThread();
+
+        worker1->moveToThread(workerThread1);
+
+        connect(workerThread1, &QThread::started, worker1, &NetworkWorker::runReceiveAndParseHtml);
+
+        sendUrl(URL, parentToChild1[1]);
+        workerThread->start();
+
+        
+        workerThread1->start();
+
+        receiveData(child2ToParent[0]);
+
+
+
+
+        if(Root == NULL){
+            cout<<"nulll herer";
+        }
+        Node* temp = Root;
+        RenderTabWidget* newTab = new RenderTabWidget(Root, this);
+        string title = RenderTabWidget::getTitle(temp);
+        cout<<title<<"title";
+        QString qtitle = QString::fromStdString(title);
+        
+        Time currentTime = std::chrono::system_clock::now();
+
+        if(title != "Not Found"){
+            tabMap.push_back(make_pair(qtitle, make_pair(URL,currentTime)));
+        }
+        
+        
+        tabWidget->addTab( newTab, qtitle);
+
+        int curr = tabWidget->currentIndex();
+        tabWidget->removeTab(curr);
+        tabWidget->insertTab( curr,newTab, qtitle);
+        tabWidget->setCurrentIndex(curr);
+        cout<<curr<<" current index"<<std::endl;
+        undo[title].push(newTab);
+        tabWidget->setProperty("url", QVariant(QUrl(QString::fromStdString(URL))));
+        urlMap[title] = URL;
+        refereshHistoryTab();
+}
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     MainWindow window;
     window.show();
     
-    // int parentToChild1[2], child1ToChild2[2];
-    pid_t pid1, pid2;
+
 
     if (socketpair(AF_UNIX, SOCK_STREAM, 0, parentToChild1) < 0 || socketpair(AF_UNIX, SOCK_STREAM, 0, child1ToChild2) < 0 || socketpair(AF_UNIX, SOCK_STREAM, 0, child2ToParent) < 0) {
         perror("Socket creation failed");
@@ -594,49 +613,8 @@ int main(int argc, char *argv[]) {
     }
     
 
-    // Fork: create one child process
-    // pid1 = fork();
-    // if (pid1 < 0) {
-    //     perror("Fork failed");
-    //     return 1;
-    // } else if (pid1 == 0) {
-    //     // Child process
-    //     // close(parentToChild1[1]);  // Close the unused end of parent socket
-    //     // while(true)
-    //         fetch_html_and_send(child1ToChild2[1], parentToChild1[0]);
-        
-        
-    //     // close(child1ToChild2[1]);  // Close the used end of the socket
-    //     exit(0);
-    // } else {
-    //     // Parent process
-        
 
-    //     // Wait for the child to finish
-    //     // wait(NULL);
-
-
-    //     pid2 = fork();
-    //     if(pid2 < 0){
-    //         perror("Fork failed");
-    //         return 1;
-    //     }
-    //     if(pid2 == 0){
-    //         // while(true)
-    //             receive_and_parse_html(child1ToChild2[0], parentToChild1[1]);
-            
-    //     }else{
-    //         // close(parentToChild1[0]); 
-    //         // close(child1ToChild2[1]);
-            
-    //         parentSocket = parentToChild1[1];
-    //         sendUrl("http://localhost:8000/html_page_1.html");
-    //         std::string jsonReceived = receiveData(parentToChild1[0]);
-    //         cout<<"done hrer also "<<std::flush;
-            
-    //         // close(parentToChild1[1]);  // Close the used end of the socket
-    //     }
-    // }
+    window.loadData();
     return app.exec();
 
 

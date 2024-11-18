@@ -13,6 +13,8 @@ namespace fs = std::filesystem;
 
 #define BUFFER_SIZE 1024
 
+string notFound = "<!DOCTYPE html>\n<html>    <head>    <title>Not Found</title></head><body>    <h2>404 URL Not Found</h2></body></html>";
+
 // Helper function to write fetched data to a string
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
@@ -26,23 +28,7 @@ std::string fetchAndCachePage( const std::string& url) {
     } else {
         pageName = pageName.substr(0, pageName.find_last_of('.')); // Remove extension
     }
-    std::string cachePath = "cache/" + pageName + ".html";
 
-    // Check if the file already exists in the cache
-    if (fs::exists(cachePath)) {
-        std::cout << "Loaded from cache: " << pageName << std::endl;
-
-        // Open and display cached content
-        std::ifstream cachedFile(cachePath);
-        std::string line;
-        while (std::getline(cachedFile, line)) {
-            std::cout << line << std::endl;
-        }
-        std::cout << "\n";
-        return cachePath;
-    }
-
-    // Fetch the content if not cached
     CURL* curl;
     CURLcode res;
     std::string readBuffer;
@@ -56,18 +42,23 @@ std::string fetchAndCachePage( const std::string& url) {
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             std::cerr << "Failed to fetch " << url << ": " << curl_easy_strerror(res) << std::endl;
+            return notFound;
         } else {
             std::cout << "Fetched and cached: " << pageName << std::endl;
             std::cout << "Content of " << pageName << ":\n" << readBuffer << "\n\n";
 
             // Write the fetched content to the cache
-            std::ofstream outFile(cachePath);
-            outFile << readBuffer;
+            // std::ofstream outFile(readBuffer);
+            // outFile << readBuffer;
+            if(readBuffer.find("Error response") != std::string::npos){
+                readBuffer = notFound;
+            }
         }
-
+        
         curl_easy_cleanup(curl);
     }
-    return cachePath;
+    cout<<"hfere"<<std::flush;
+    return readBuffer;
 }
 
 void fetch_html_and_send(int socket_fd, int parentSocket) {
@@ -81,18 +72,55 @@ void fetch_html_and_send(int socket_fd, int parentSocket) {
     std::string url(buff);  // Convert to std::string
 
     std::cout<<"url to be used "<<url<<std::endl;
-    std::string pageName = fetchAndCachePage(url) ;
-    // Read the HTML content from a file
-    std::cout<<pageName<<" "<<std::flush;
-    std::ifstream file(pageName);
-    if (!file) {
-        perror("Error opening file");
-        exit(1);
+    // std::string pageName = fetchAndCachePage(url) ;
+    std::string pageName = url.substr(url.find_last_of('/') + 1);
+    if (pageName.empty() || pageName.find('.') == std::string::npos) {
+        pageName = "index"; // Default to 'index' if no file name is present
+    } else {
+        pageName = pageName.substr(0, pageName.find_last_of('.')); // Remove extension
     }
 
-    std::stringstream buffer;
-    buffer << file.rdbuf();  // Read the entire file into the stringstream
-    std::string html_content = buffer.str();
+    CURL* curl;
+    CURLcode res;
+    std::string readBuffer;
+
+    curl = curl_easy_init();
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+        res = curl_easy_perform(curl);
+        if (res != CURLE_OK) {
+            std::cerr << "Failed to fetch " << url << ": " << curl_easy_strerror(res) << std::endl;
+            readBuffer = notFound;
+        } else {
+            std::cout << "Fetched and cached: " << pageName << std::endl;
+            std::cout << "Content of " << pageName << ":\n" << readBuffer << "\n\n";
+
+            // Write the fetched content to the cache
+            // std::ofstream outFile(readBuffer);
+            // outFile << readBuffer;
+        }
+        
+        curl_easy_cleanup(curl);
+    }
+    // cout<<"hfere"<<std::flush;
+
+
+    cout<<"till shere"<<std::flush;
+;    // Read the HTML content from a file
+    std::cout<<readBuffer<<" "<<std::flush;
+    // std::ifstream file(pageName);
+    // if (!file) {
+    //     perror("Error opening file");
+    //     exit(1);
+    // }
+
+    // std::stringstream buffer;
+    // buffer << file.rdbuf();  // Read the entire file into the stringstream
+    // std::string html_content = buffer.str();
+    std::string html_content = readBuffer;
     size_t content_length = html_content.size();
     size_t total_sent = 0;
 

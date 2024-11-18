@@ -133,7 +133,8 @@ extern int yydebug;
     RANGBRACKET = 320,             /* RANGBRACKET  */
     EQUAL = 321,                   /* EQUAL  */
     DOUBLEINVERTEDCOMMA = 322,     /* DOUBLEINVERTEDCOMMA  */
-    WHITESPACE = 323               /* WHITESPACE  */
+    WHITESPACE = 323,              /* WHITESPACE  */
+    PREAMBLE = 324                 /* PREAMBLE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -147,7 +148,7 @@ union YYSTYPE
     std::string* str; // Use std::string to specify the type correctly
     Node* node;
 
-#line 151 "parser.hpp"
+#line 152 "parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

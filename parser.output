@@ -1,11 +1,5 @@
 Terminals unused in grammar
 
-    U_BEGIN
-    U_END
-    SMALL_BEGIN
-    SMALL_END
-    CODE_BEGIN
-    CODE_END
     LANGBRACKET
     EQUAL
     WHITESPACE
@@ -19,215 +13,223 @@ Grammar
     2      | html
 
     3 preabmle: TEXT
+    4         | PREAMBLE
 
-    4 html: HTML_BEGIN head HTML_END
+    5 html: HTML_BEGIN head HTML_END
 
-    5 head: HEAD_BEGIN title HEAD_END body
+    6 head: HEAD_BEGIN title HEAD_END body
 
-    6 title: TITLE_BEGIN titleContent TITLE_END
+    7 title: TITLE_BEGIN titleContent TITLE_END
 
-    7 titleContent: textContent
+    8 titleContent: textContent
 
-    8 body: BODY_BEGIN bodyContent BODY_END
+    9 body: BODY_BEGIN bodyContent BODY_END
 
-    9 textContent: ε
-   10            | textContent text
+   10 textContent: ε
+   11            | textContent text
 
-   11 text: TEXT
-   12     | SPACE
-   13     | NEWLINE
+   12 text: TEXT
+   13     | SPACE
+   14     | NEWLINE
 
-   14 bodyContent: semanticTags bodyContent
-   15            | semanticTags
+   15 bodyContent: semanticTags bodyContent
+   16            | semanticTags
 
-   16 semanticTags: HEADER_BEGIN bodyContent HEADER_END
-   17             | NAV_BEGIN bodyContent NAV_END
-   18             | SECTION_BEGIN bodyContent SECTION_END
-   19             | ARTICLE_BEGIN bodyContent ARTICLE_END
-   20             | ASIDE_BEGIN bodyContent ASIDE_END
-   21             | FOOTER_BEGIN bodyContent FOOTER_END
-   22             | H1_BEGIN textTags H1_END
-   23             | H2_BEGIN textTags H2_END
-   24             | H3_BEGIN textTags H3_END
-   25             | H4_BEGIN textTags H4_END
-   26             | H5_BEGIN textTags H5_END
-   27             | PARA_BEGIN textTags PARA_END
-   28             | STRONG_BEGIN textTags STRONG_END
-   29             | EM_BEGIN textTags EM_END
-   30             | BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END
-   31             | PRE_BEGIN pretag textTags PRE_END
-   32             | list
-   33             | A_BEGIN anchor A_END
-   34             | IMG_BEGIN image RANGBRACKET
-   35             | TEXT
-   36             | SPACE
-   37             | NEWLINE
+   17 semanticTags: HEADER_BEGIN bodyContent HEADER_END
+   18             | NAV_BEGIN bodyContent NAV_END
+   19             | SECTION_BEGIN bodyContent SECTION_END
+   20             | ARTICLE_BEGIN bodyContent ARTICLE_END
+   21             | ASIDE_BEGIN bodyContent ASIDE_END
+   22             | FOOTER_BEGIN bodyContent FOOTER_END
+   23             | H1_BEGIN textTags H1_END
+   24             | H2_BEGIN textTags H2_END
+   25             | H3_BEGIN textTags H3_END
+   26             | H4_BEGIN textTags H4_END
+   27             | H5_BEGIN textTags H5_END
+   28             | PARA_BEGIN textTags PARA_END
+   29             | STRONG_BEGIN textTags STRONG_END
+   30             | EM_BEGIN textTags EM_END
+   31             | BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END
+   32             | PRE_BEGIN pretag textTags PRE_END
+   33             | list
+   34             | A_BEGIN anchor A_END
+   35             | IMG_BEGIN image RANGBRACKET
+   36             | U_BEGIN textTags U_END
+   37             | CODE_BEGIN textTags CODE_END
+   38             | SMALL_BEGIN textTags SMALL_END
+   39             | TEXT
+   40             | SPACE
+   41             | NEWLINE
 
-   38 textTags: textTag textTags
-   39         | textTag
+   42 textTags: textTag textTags
+   43         | textTag
 
-   40 textTag: PARA_BEGIN textTags PARA_END
-   41        | STRONG_BEGIN textTags STRONG_END
-   42        | EM_BEGIN textTags EM_END
-   43        | BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END
-   44        | PRE_BEGIN pretag textTags PRE_END
-   45        | list
-   46        | A_BEGIN anchor A_END
-   47        | IMG_BEGIN image RANGBRACKET
-   48        | TEXT
-   49        | SPACE
-   50        | NEWLINE
+   44 textTag: PARA_BEGIN textTags PARA_END
+   45        | STRONG_BEGIN textTags STRONG_END
+   46        | EM_BEGIN textTags EM_END
+   47        | BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END
+   48        | PRE_BEGIN pretag textTags PRE_END
+   49        | list
+   50        | A_BEGIN anchor A_END
+   51        | IMG_BEGIN image RANGBRACKET
+   52        | U_BEGIN textTags U_END
+   53        | CODE_BEGIN textTags CODE_END
+   54        | SMALL_BEGIN textTags SMALL_END
+   55        | TEXT
+   56        | SPACE
+   57        | NEWLINE
 
-   51 pretag: ε
+   58 pretag: ε
 
-   52 list: OL_BEGIN listElements OL_END
-   53     | UL_BEGIN listElements UL_END
+   59 list: OL_BEGIN listElements OL_END
+   60     | UL_BEGIN listElements UL_END
 
-   54 listElements: listElements LI_BEGIN bodyContent LI_END
-   55             | LI_BEGIN bodyContent LI_END
+   61 listElements: listElements LI_BEGIN bodyContent LI_END
+   62             | LI_BEGIN bodyContent LI_END
 
-   56 anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent
+   63 anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent
 
-   57 image: imageAttributes DOUBLEINVERTEDCOMMA image
-   58      | ε
+   64 image: imageAttributes DOUBLEINVERTEDCOMMA image
+   65      | ε
 
-   59 imageAttributes: SRC textContent
-   60                | ALT textContent
+   66 imageAttributes: SRC textContent
+   67                | ALT textContent
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    HTML_BEGIN (258) 4
-    HTML_END (259) 4
-    HEAD_BEGIN (260) 5
-    HEAD_END (261) 5
-    TITLE_BEGIN (262) 6
-    TITLE_END (263) 6
-    BODY_BEGIN (264) 8
-    BODY_END (265) 8
-    NAV_BEGIN (266) 17
-    NAV_END (267) 17
-    UL_BEGIN (268) 53
-    UL_END (269) 53
-    LI_BEGIN (270) 54 55
-    LI_END (271) 54 55
-    HEADER_BEGIN (272) 16
-    HEADER_END (273) 16
-    H1_BEGIN (274) 22
-    H1_END (275) 22
-    H2_BEGIN (276) 23
-    H2_END (277) 23
-    H3_BEGIN (278) 24
-    H3_END (279) 24
-    H4_BEGIN (280) 25
-    H4_END (281) 25
-    H5_BEGIN (282) 26
-    H5_END (283) 26
-    PARA_BEGIN (284) 27 40
-    PARA_END (285) 27 40
-    SECTION_BEGIN (286) 18
-    SECTION_END (287) 18
-    ARTICLE_BEGIN (288) 19
-    ARTICLE_END (289) 19
-    ASIDE_BEGIN (290) 20
-    ASIDE_END (291) 20
-    FOOTER_BEGIN (292) 21
-    FOOTER_END (293) 21
-    A_BEGIN (294) 33 46
-    A_END (295) 33 46
-    STRONG_BEGIN (296) 28 41
-    STRONG_END (297) 28 41
-    EM_BEGIN (298) 29 42
-    EM_END (299) 29 42
-    U_BEGIN (300)
-    U_END (301)
-    SMALL_BEGIN (302)
-    SMALL_END (303)
-    BLOCKQUOTE_BEGIN (304) 30 43
-    BLOCKQUOTE_END (305) 30 43
-    PRE_BEGIN (306) 31 44
-    PRE_END (307) 31 44
-    CODE_BEGIN (308)
-    CODE_END (309)
-    OL_BEGIN (310) 52
-    OL_END (311) 52
-    TEXT <str> (312) 3 11 35 48
-    SPACE <str> (313) 12 36 49
-    NEWLINE <str> (314) 13 37 50
-    HREF (315) 56
-    IMG_BEGIN (316) 34 47
-    SRC (317) 59
-    ALT (318) 60
+    HTML_BEGIN (258) 5
+    HTML_END (259) 5
+    HEAD_BEGIN (260) 6
+    HEAD_END (261) 6
+    TITLE_BEGIN (262) 7
+    TITLE_END (263) 7
+    BODY_BEGIN (264) 9
+    BODY_END (265) 9
+    NAV_BEGIN (266) 18
+    NAV_END (267) 18
+    UL_BEGIN (268) 60
+    UL_END (269) 60
+    LI_BEGIN (270) 61 62
+    LI_END (271) 61 62
+    HEADER_BEGIN (272) 17
+    HEADER_END (273) 17
+    H1_BEGIN (274) 23
+    H1_END (275) 23
+    H2_BEGIN (276) 24
+    H2_END (277) 24
+    H3_BEGIN (278) 25
+    H3_END (279) 25
+    H4_BEGIN (280) 26
+    H4_END (281) 26
+    H5_BEGIN (282) 27
+    H5_END (283) 27
+    PARA_BEGIN (284) 28 44
+    PARA_END (285) 28 44
+    SECTION_BEGIN (286) 19
+    SECTION_END (287) 19
+    ARTICLE_BEGIN (288) 20
+    ARTICLE_END (289) 20
+    ASIDE_BEGIN (290) 21
+    ASIDE_END (291) 21
+    FOOTER_BEGIN (292) 22
+    FOOTER_END (293) 22
+    A_BEGIN (294) 34 50
+    A_END (295) 34 50
+    STRONG_BEGIN (296) 29 45
+    STRONG_END (297) 29 45
+    EM_BEGIN (298) 30 46
+    EM_END (299) 30 46
+    U_BEGIN (300) 36 52
+    U_END (301) 36 52
+    SMALL_BEGIN (302) 38 54
+    SMALL_END (303) 38 54
+    BLOCKQUOTE_BEGIN (304) 31 47
+    BLOCKQUOTE_END (305) 31 47
+    PRE_BEGIN (306) 32 48
+    PRE_END (307) 32 48
+    CODE_BEGIN (308) 37 53
+    CODE_END (309) 37 53
+    OL_BEGIN (310) 59
+    OL_END (311) 59
+    TEXT <str> (312) 3 12 39 55
+    SPACE <str> (313) 13 40 56
+    NEWLINE <str> (314) 14 41 57
+    HREF (315) 63
+    IMG_BEGIN (316) 35 51
+    SRC (317) 66
+    ALT (318) 67
     LANGBRACKET (319)
-    RANGBRACKET (320) 34 47 56
+    RANGBRACKET (320) 35 51 63
     EQUAL (321)
-    DOUBLEINVERTEDCOMMA (322) 56 57
+    DOUBLEINVERTEDCOMMA (322) 63 64
     WHITESPACE (323)
+    PREAMBLE (324) 4
 
 
 Nonterminals, with rules where they appear
 
-    $accept (69)
+    $accept (70)
         on left: 0
-    start <node> (70)
+    start <node> (71)
         on left: 1 2
         on right: 0 1
-    preabmle (71)
-        on left: 3
+    preabmle (72)
+        on left: 3 4
         on right: 1
-    html <node> (72)
-        on left: 4
-        on right: 2
-    head <node> (73)
+    html <node> (73)
         on left: 5
-        on right: 4
-    title <node> (74)
+        on right: 2
+    head <node> (74)
         on left: 6
         on right: 5
-    titleContent <node> (75)
+    title <node> (75)
         on left: 7
         on right: 6
-    body <node> (76)
+    titleContent <node> (76)
         on left: 8
-        on right: 5
-    textContent <node> (77)
-        on left: 9 10
-        on right: 7 10 56 59 60
-    text <node> (78)
-        on left: 11 12 13
-        on right: 10
-    bodyContent <node> (79)
-        on left: 14 15
-        on right: 8 14 16 17 18 19 20 21 54 55 56
-    semanticTags <node> (80)
-        on left: 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37
-        on right: 14 15
-    textTags <node> (81)
-        on left: 38 39
-        on right: 22 23 24 25 26 27 28 29 30 31 38 40 41 42 43 44
-    textTag <node> (82)
-        on left: 40 41 42 43 44 45 46 47 48 49 50
-        on right: 38 39
-    pretag (83)
-        on left: 51
-        on right: 31 44
-    list <node> (84)
-        on left: 52 53
-        on right: 32 45
-    listElements <node> (85)
-        on left: 54 55
-        on right: 52 53 54
-    anchor <node> (86)
-        on left: 56
-        on right: 33 46
-    image <node> (87)
-        on left: 57 58
-        on right: 34 47 57
-    imageAttributes <node> (88)
+        on right: 7
+    body <node> (77)
+        on left: 9
+        on right: 6
+    textContent <node> (78)
+        on left: 10 11
+        on right: 8 11 63 66 67
+    text <node> (79)
+        on left: 12 13 14
+        on right: 11
+    bodyContent <node> (80)
+        on left: 15 16
+        on right: 9 15 17 18 19 20 21 22 61 62 63
+    semanticTags <node> (81)
+        on left: 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41
+        on right: 15 16
+    textTags <node> (82)
+        on left: 42 43
+        on right: 23 24 25 26 27 28 29 30 31 32 36 37 38 42 44 45 46 47 48 52 53 54
+    textTag <node> (83)
+        on left: 44 45 46 47 48 49 50 51 52 53 54 55 56 57
+        on right: 42 43
+    pretag (84)
+        on left: 58
+        on right: 32 48
+    list <node> (85)
         on left: 59 60
-        on right: 57
+        on right: 33 49
+    listElements <node> (86)
+        on left: 61 62
+        on right: 59 60 61
+    anchor <node> (87)
+        on left: 63
+        on right: 34 50
+    image <node> (88)
+        on left: 64 65
+        on right: 35 51 64
+    imageAttributes <node> (89)
+        on left: 66 67
+        on right: 64
 
 
 State 0
@@ -236,19 +238,20 @@ State 0
 
     HTML_BEGIN  shift, and go to state 1
     TEXT        shift, and go to state 2
+    PREAMBLE    shift, and go to state 3
 
-    start     go to state 3
-    preabmle  go to state 4
-    html      go to state 5
+    start     go to state 4
+    preabmle  go to state 5
+    html      go to state 6
 
 
 State 1
 
-    4 html: HTML_BEGIN • head HTML_END
+    5 html: HTML_BEGIN • head HTML_END
 
-    HEAD_BEGIN  shift, and go to state 6
+    HEAD_BEGIN  shift, and go to state 7
 
-    head  go to state 7
+    head  go to state 8
 
 
 State 2
@@ -260,1555 +263,1878 @@ State 2
 
 State 3
 
-    0 $accept: start • $end
+    4 preabmle: PREAMBLE •
 
-    $end  shift, and go to state 8
+    $default  reduce using rule 4 (preabmle)
 
 
 State 4
+
+    0 $accept: start • $end
+
+    $end  shift, and go to state 9
+
+
+State 5
 
     1 start: preabmle • start
 
     HTML_BEGIN  shift, and go to state 1
     TEXT        shift, and go to state 2
+    PREAMBLE    shift, and go to state 3
 
-    start     go to state 9
-    preabmle  go to state 4
-    html      go to state 5
+    start     go to state 10
+    preabmle  go to state 5
+    html      go to state 6
 
 
-State 5
+State 6
 
     2 start: html •
 
     $default  reduce using rule 2 (start)
 
 
-State 6
-
-    5 head: HEAD_BEGIN • title HEAD_END body
-
-    TITLE_BEGIN  shift, and go to state 10
-
-    title  go to state 11
-
-
 State 7
 
-    4 html: HTML_BEGIN head • HTML_END
+    6 head: HEAD_BEGIN • title HEAD_END body
 
-    HTML_END  shift, and go to state 12
+    TITLE_BEGIN  shift, and go to state 11
+
+    title  go to state 12
 
 
 State 8
+
+    5 html: HTML_BEGIN head • HTML_END
+
+    HTML_END  shift, and go to state 13
+
+
+State 9
 
     0 $accept: start $end •
 
     $default  accept
 
 
-State 9
+State 10
 
     1 start: preabmle start •
 
     $default  reduce using rule 1 (start)
 
 
-State 10
-
-    6 title: TITLE_BEGIN • titleContent TITLE_END
-
-    $default  reduce using rule 9 (textContent)
-
-    titleContent  go to state 13
-    textContent   go to state 14
-
-
 State 11
 
-    5 head: HEAD_BEGIN title • HEAD_END body
+    7 title: TITLE_BEGIN • titleContent TITLE_END
 
-    HEAD_END  shift, and go to state 15
+    $default  reduce using rule 10 (textContent)
+
+    titleContent  go to state 14
+    textContent   go to state 15
 
 
 State 12
 
-    4 html: HTML_BEGIN head HTML_END •
+    6 head: HEAD_BEGIN title • HEAD_END body
 
-    $default  reduce using rule 4 (html)
+    HEAD_END  shift, and go to state 16
 
 
 State 13
 
-    6 title: TITLE_BEGIN titleContent • TITLE_END
+    5 html: HTML_BEGIN head HTML_END •
 
-    TITLE_END  shift, and go to state 16
+    $default  reduce using rule 5 (html)
 
 
 State 14
 
-    7 titleContent: textContent •
-   10 textContent: textContent • text
+    7 title: TITLE_BEGIN titleContent • TITLE_END
 
-    TEXT     shift, and go to state 17
-    SPACE    shift, and go to state 18
-    NEWLINE  shift, and go to state 19
-
-    $default  reduce using rule 7 (titleContent)
-
-    text  go to state 20
+    TITLE_END  shift, and go to state 17
 
 
 State 15
 
-    5 head: HEAD_BEGIN title HEAD_END • body
+    8 titleContent: textContent •
+   11 textContent: textContent • text
 
-    BODY_BEGIN  shift, and go to state 21
+    TEXT     shift, and go to state 18
+    SPACE    shift, and go to state 19
+    NEWLINE  shift, and go to state 20
 
-    body  go to state 22
+    $default  reduce using rule 8 (titleContent)
+
+    text  go to state 21
 
 
 State 16
 
-    6 title: TITLE_BEGIN titleContent TITLE_END •
+    6 head: HEAD_BEGIN title HEAD_END • body
 
-    $default  reduce using rule 6 (title)
+    BODY_BEGIN  shift, and go to state 22
+
+    body  go to state 23
 
 
 State 17
 
-   11 text: TEXT •
+    7 title: TITLE_BEGIN titleContent TITLE_END •
 
-    $default  reduce using rule 11 (text)
+    $default  reduce using rule 7 (title)
 
 
 State 18
 
-   12 text: SPACE •
+   12 text: TEXT •
 
     $default  reduce using rule 12 (text)
 
 
 State 19
 
-   13 text: NEWLINE •
+   13 text: SPACE •
 
     $default  reduce using rule 13 (text)
 
 
 State 20
 
-   10 textContent: textContent text •
+   14 text: NEWLINE •
 
-    $default  reduce using rule 10 (textContent)
+    $default  reduce using rule 14 (text)
 
 
 State 21
 
-    8 body: BODY_BEGIN • bodyContent BODY_END
+   11 textContent: textContent text •
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
-
-    bodyContent   go to state 46
-    semanticTags  go to state 47
-    list          go to state 48
+    $default  reduce using rule 11 (textContent)
 
 
 State 22
 
-    5 head: HEAD_BEGIN title HEAD_END body •
+    9 body: BODY_BEGIN • bodyContent BODY_END
 
-    $default  reduce using rule 5 (head)
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
+
+    bodyContent   go to state 50
+    semanticTags  go to state 51
+    list          go to state 52
 
 
 State 23
 
-   17 semanticTags: NAV_BEGIN • bodyContent NAV_END
+    6 head: HEAD_BEGIN title HEAD_END body •
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
-
-    bodyContent   go to state 49
-    semanticTags  go to state 47
-    list          go to state 48
+    $default  reduce using rule 6 (head)
 
 
 State 24
 
-   53 list: UL_BEGIN • listElements UL_END
+   18 semanticTags: NAV_BEGIN • bodyContent NAV_END
 
-    LI_BEGIN  shift, and go to state 50
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
 
-    listElements  go to state 51
+    bodyContent   go to state 53
+    semanticTags  go to state 51
+    list          go to state 52
 
 
 State 25
 
-   16 semanticTags: HEADER_BEGIN • bodyContent HEADER_END
+   60 list: UL_BEGIN • listElements UL_END
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
+    LI_BEGIN  shift, and go to state 54
 
-    bodyContent   go to state 52
-    semanticTags  go to state 47
-    list          go to state 48
+    listElements  go to state 55
 
 
 State 26
 
-   22 semanticTags: H1_BEGIN • textTags H1_END
+   17 semanticTags: HEADER_BEGIN • bodyContent HEADER_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
 
-    textTags  go to state 63
-    textTag   go to state 64
-    list      go to state 65
+    bodyContent   go to state 56
+    semanticTags  go to state 51
+    list          go to state 52
 
 
 State 27
 
-   23 semanticTags: H2_BEGIN • textTags H2_END
+   23 semanticTags: H1_BEGIN • textTags H1_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    textTags  go to state 66
-    textTag   go to state 64
-    list      go to state 65
+    textTags  go to state 70
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 28
 
-   24 semanticTags: H3_BEGIN • textTags H3_END
+   24 semanticTags: H2_BEGIN • textTags H2_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    textTags  go to state 67
-    textTag   go to state 64
-    list      go to state 65
+    textTags  go to state 73
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 29
 
-   25 semanticTags: H4_BEGIN • textTags H4_END
+   25 semanticTags: H3_BEGIN • textTags H3_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    textTags  go to state 68
-    textTag   go to state 64
-    list      go to state 65
+    textTags  go to state 74
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 30
 
-   26 semanticTags: H5_BEGIN • textTags H5_END
+   26 semanticTags: H4_BEGIN • textTags H4_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    textTags  go to state 69
-    textTag   go to state 64
-    list      go to state 65
+    textTags  go to state 75
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 31
 
-   27 semanticTags: PARA_BEGIN • textTags PARA_END
+   27 semanticTags: H5_BEGIN • textTags H5_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    textTags  go to state 70
-    textTag   go to state 64
-    list      go to state 65
+    textTags  go to state 76
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 32
 
-   18 semanticTags: SECTION_BEGIN • bodyContent SECTION_END
+   28 semanticTags: PARA_BEGIN • textTags PARA_END
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    bodyContent   go to state 71
-    semanticTags  go to state 47
-    list          go to state 48
+    textTags  go to state 77
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 33
 
-   19 semanticTags: ARTICLE_BEGIN • bodyContent ARTICLE_END
+   19 semanticTags: SECTION_BEGIN • bodyContent SECTION_END
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
 
-    bodyContent   go to state 72
-    semanticTags  go to state 47
-    list          go to state 48
+    bodyContent   go to state 78
+    semanticTags  go to state 51
+    list          go to state 52
 
 
 State 34
 
-   20 semanticTags: ASIDE_BEGIN • bodyContent ASIDE_END
+   20 semanticTags: ARTICLE_BEGIN • bodyContent ARTICLE_END
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
 
-    bodyContent   go to state 73
-    semanticTags  go to state 47
-    list          go to state 48
+    bodyContent   go to state 79
+    semanticTags  go to state 51
+    list          go to state 52
 
 
 State 35
 
-   21 semanticTags: FOOTER_BEGIN • bodyContent FOOTER_END
+   21 semanticTags: ASIDE_BEGIN • bodyContent ASIDE_END
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
 
-    bodyContent   go to state 74
-    semanticTags  go to state 47
-    list          go to state 48
+    bodyContent   go to state 80
+    semanticTags  go to state 51
+    list          go to state 52
 
 
 State 36
 
-   33 semanticTags: A_BEGIN • anchor A_END
+   22 semanticTags: FOOTER_BEGIN • bodyContent FOOTER_END
 
-    HREF  shift, and go to state 75
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
 
-    anchor  go to state 76
+    bodyContent   go to state 81
+    semanticTags  go to state 51
+    list          go to state 52
 
 
 State 37
 
-   28 semanticTags: STRONG_BEGIN • textTags STRONG_END
+   34 semanticTags: A_BEGIN • anchor A_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    HREF  shift, and go to state 82
 
-    textTags  go to state 77
-    textTag   go to state 64
-    list      go to state 65
+    anchor  go to state 83
 
 
 State 38
 
-   29 semanticTags: EM_BEGIN • textTags EM_END
+   29 semanticTags: STRONG_BEGIN • textTags STRONG_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    textTags  go to state 78
-    textTag   go to state 64
-    list      go to state 65
+    textTags  go to state 84
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 39
 
-   30 semanticTags: BLOCKQUOTE_BEGIN • textTags BLOCKQUOTE_END
+   30 semanticTags: EM_BEGIN • textTags EM_END
 
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    textTags  go to state 79
-    textTag   go to state 64
-    list      go to state 65
+    textTags  go to state 85
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 40
 
-   31 semanticTags: PRE_BEGIN • pretag textTags PRE_END
+   36 semanticTags: U_BEGIN • textTags U_END
 
-    $default  reduce using rule 51 (pretag)
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    pretag  go to state 80
+    textTags  go to state 86
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 41
 
-   52 list: OL_BEGIN • listElements OL_END
+   38 semanticTags: SMALL_BEGIN • textTags SMALL_END
 
-    LI_BEGIN  shift, and go to state 50
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    listElements  go to state 81
+    textTags  go to state 87
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 42
 
-   35 semanticTags: TEXT •
+   31 semanticTags: BLOCKQUOTE_BEGIN • textTags BLOCKQUOTE_END
 
-    $default  reduce using rule 35 (semanticTags)
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
+
+    textTags  go to state 88
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 43
 
-   36 semanticTags: SPACE •
+   32 semanticTags: PRE_BEGIN • pretag textTags PRE_END
 
-    $default  reduce using rule 36 (semanticTags)
+    $default  reduce using rule 58 (pretag)
+
+    pretag  go to state 89
 
 
 State 44
 
-   37 semanticTags: NEWLINE •
+   37 semanticTags: CODE_BEGIN • textTags CODE_END
 
-    $default  reduce using rule 37 (semanticTags)
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
+
+    textTags  go to state 90
+    textTag   go to state 71
+    list      go to state 72
 
 
 State 45
 
-   34 semanticTags: IMG_BEGIN • image RANGBRACKET
+   59 list: OL_BEGIN • listElements OL_END
 
-    SRC  shift, and go to state 82
-    ALT  shift, and go to state 83
+    LI_BEGIN  shift, and go to state 54
 
-    $default  reduce using rule 58 (image)
-
-    image            go to state 84
-    imageAttributes  go to state 85
+    listElements  go to state 91
 
 
 State 46
 
-    8 body: BODY_BEGIN bodyContent • BODY_END
+   39 semanticTags: TEXT •
 
-    BODY_END  shift, and go to state 86
+    $default  reduce using rule 39 (semanticTags)
 
 
 State 47
 
-   14 bodyContent: semanticTags • bodyContent
-   15            | semanticTags •
+   40 semanticTags: SPACE •
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
-
-    $default  reduce using rule 15 (bodyContent)
-
-    bodyContent   go to state 87
-    semanticTags  go to state 47
-    list          go to state 48
+    $default  reduce using rule 40 (semanticTags)
 
 
 State 48
 
-   32 semanticTags: list •
+   41 semanticTags: NEWLINE •
 
-    $default  reduce using rule 32 (semanticTags)
+    $default  reduce using rule 41 (semanticTags)
 
 
 State 49
 
-   17 semanticTags: NAV_BEGIN bodyContent • NAV_END
+   35 semanticTags: IMG_BEGIN • image RANGBRACKET
 
-    NAV_END  shift, and go to state 88
+    SRC  shift, and go to state 92
+    ALT  shift, and go to state 93
+
+    $default  reduce using rule 65 (image)
+
+    image            go to state 94
+    imageAttributes  go to state 95
 
 
 State 50
 
-   55 listElements: LI_BEGIN • bodyContent LI_END
+    9 body: BODY_BEGIN bodyContent • BODY_END
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
-
-    bodyContent   go to state 89
-    semanticTags  go to state 47
-    list          go to state 48
+    BODY_END  shift, and go to state 96
 
 
 State 51
 
-   53 list: UL_BEGIN listElements • UL_END
-   54 listElements: listElements • LI_BEGIN bodyContent LI_END
+   15 bodyContent: semanticTags • bodyContent
+   16            | semanticTags •
 
-    UL_END    shift, and go to state 90
-    LI_BEGIN  shift, and go to state 91
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
+
+    $default  reduce using rule 16 (bodyContent)
+
+    bodyContent   go to state 97
+    semanticTags  go to state 51
+    list          go to state 52
 
 
 State 52
 
-   16 semanticTags: HEADER_BEGIN bodyContent • HEADER_END
-
-    HEADER_END  shift, and go to state 92
-
-
-State 53
-
-   40 textTag: PARA_BEGIN • textTags PARA_END
-
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
-
-    textTags  go to state 93
-    textTag   go to state 64
-    list      go to state 65
-
-
-State 54
-
-   46 textTag: A_BEGIN • anchor A_END
-
-    HREF  shift, and go to state 75
-
-    anchor  go to state 94
-
-
-State 55
-
-   41 textTag: STRONG_BEGIN • textTags STRONG_END
-
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
-
-    textTags  go to state 95
-    textTag   go to state 64
-    list      go to state 65
-
-
-State 56
-
-   42 textTag: EM_BEGIN • textTags EM_END
-
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
-
-    textTags  go to state 96
-    textTag   go to state 64
-    list      go to state 65
-
-
-State 57
-
-   43 textTag: BLOCKQUOTE_BEGIN • textTags BLOCKQUOTE_END
-
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
-
-    textTags  go to state 97
-    textTag   go to state 64
-    list      go to state 65
-
-
-State 58
-
-   44 textTag: PRE_BEGIN • pretag textTags PRE_END
-
-    $default  reduce using rule 51 (pretag)
-
-    pretag  go to state 98
-
-
-State 59
-
-   48 textTag: TEXT •
-
-    $default  reduce using rule 48 (textTag)
-
-
-State 60
-
-   49 textTag: SPACE •
-
-    $default  reduce using rule 49 (textTag)
-
-
-State 61
-
-   50 textTag: NEWLINE •
-
-    $default  reduce using rule 50 (textTag)
-
-
-State 62
-
-   47 textTag: IMG_BEGIN • image RANGBRACKET
-
-    SRC  shift, and go to state 82
-    ALT  shift, and go to state 83
-
-    $default  reduce using rule 58 (image)
-
-    image            go to state 99
-    imageAttributes  go to state 85
-
-
-State 63
-
-   22 semanticTags: H1_BEGIN textTags • H1_END
-
-    H1_END  shift, and go to state 100
-
-
-State 64
-
-   38 textTags: textTag • textTags
-   39         | textTag •
-
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
-
-    $default  reduce using rule 39 (textTags)
-
-    textTags  go to state 101
-    textTag   go to state 64
-    list      go to state 65
-
-
-State 65
-
-   45 textTag: list •
-
-    $default  reduce using rule 45 (textTag)
-
-
-State 66
-
-   23 semanticTags: H2_BEGIN textTags • H2_END
-
-    H2_END  shift, and go to state 102
-
-
-State 67
-
-   24 semanticTags: H3_BEGIN textTags • H3_END
-
-    H3_END  shift, and go to state 103
-
-
-State 68
-
-   25 semanticTags: H4_BEGIN textTags • H4_END
-
-    H4_END  shift, and go to state 104
-
-
-State 69
-
-   26 semanticTags: H5_BEGIN textTags • H5_END
-
-    H5_END  shift, and go to state 105
-
-
-State 70
-
-   27 semanticTags: PARA_BEGIN textTags • PARA_END
-
-    PARA_END  shift, and go to state 106
-
-
-State 71
-
-   18 semanticTags: SECTION_BEGIN bodyContent • SECTION_END
-
-    SECTION_END  shift, and go to state 107
-
-
-State 72
-
-   19 semanticTags: ARTICLE_BEGIN bodyContent • ARTICLE_END
-
-    ARTICLE_END  shift, and go to state 108
-
-
-State 73
-
-   20 semanticTags: ASIDE_BEGIN bodyContent • ASIDE_END
-
-    ASIDE_END  shift, and go to state 109
-
-
-State 74
-
-   21 semanticTags: FOOTER_BEGIN bodyContent • FOOTER_END
-
-    FOOTER_END  shift, and go to state 110
-
-
-State 75
-
-   56 anchor: HREF • textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent
-
-    $default  reduce using rule 9 (textContent)
-
-    textContent  go to state 111
-
-
-State 76
-
-   33 semanticTags: A_BEGIN anchor • A_END
-
-    A_END  shift, and go to state 112
-
-
-State 77
-
-   28 semanticTags: STRONG_BEGIN textTags • STRONG_END
-
-    STRONG_END  shift, and go to state 113
-
-
-State 78
-
-   29 semanticTags: EM_BEGIN textTags • EM_END
-
-    EM_END  shift, and go to state 114
-
-
-State 79
-
-   30 semanticTags: BLOCKQUOTE_BEGIN textTags • BLOCKQUOTE_END
-
-    BLOCKQUOTE_END  shift, and go to state 115
-
-
-State 80
-
-   31 semanticTags: PRE_BEGIN pretag • textTags PRE_END
-
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
-
-    textTags  go to state 116
-    textTag   go to state 64
-    list      go to state 65
-
-
-State 81
-
-   52 list: OL_BEGIN listElements • OL_END
-   54 listElements: listElements • LI_BEGIN bodyContent LI_END
-
-    LI_BEGIN  shift, and go to state 91
-    OL_END    shift, and go to state 117
-
-
-State 82
-
-   59 imageAttributes: SRC • textContent
-
-    $default  reduce using rule 9 (textContent)
-
-    textContent  go to state 118
-
-
-State 83
-
-   60 imageAttributes: ALT • textContent
-
-    $default  reduce using rule 9 (textContent)
-
-    textContent  go to state 119
-
-
-State 84
-
-   34 semanticTags: IMG_BEGIN image • RANGBRACKET
-
-    RANGBRACKET  shift, and go to state 120
-
-
-State 85
-
-   57 image: imageAttributes • DOUBLEINVERTEDCOMMA image
-
-    DOUBLEINVERTEDCOMMA  shift, and go to state 121
-
-
-State 86
-
-    8 body: BODY_BEGIN bodyContent BODY_END •
-
-    $default  reduce using rule 8 (body)
-
-
-State 87
-
-   14 bodyContent: semanticTags bodyContent •
-
-    $default  reduce using rule 14 (bodyContent)
-
-
-State 88
-
-   17 semanticTags: NAV_BEGIN bodyContent NAV_END •
-
-    $default  reduce using rule 17 (semanticTags)
-
-
-State 89
-
-   55 listElements: LI_BEGIN bodyContent • LI_END
-
-    LI_END  shift, and go to state 122
-
-
-State 90
-
-   53 list: UL_BEGIN listElements UL_END •
-
-    $default  reduce using rule 53 (list)
-
-
-State 91
-
-   54 listElements: listElements LI_BEGIN • bodyContent LI_END
-
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
-
-    bodyContent   go to state 123
-    semanticTags  go to state 47
-    list          go to state 48
-
-
-State 92
-
-   16 semanticTags: HEADER_BEGIN bodyContent HEADER_END •
-
-    $default  reduce using rule 16 (semanticTags)
-
-
-State 93
-
-   40 textTag: PARA_BEGIN textTags • PARA_END
-
-    PARA_END  shift, and go to state 124
-
-
-State 94
-
-   46 textTag: A_BEGIN anchor • A_END
-
-    A_END  shift, and go to state 125
-
-
-State 95
-
-   41 textTag: STRONG_BEGIN textTags • STRONG_END
-
-    STRONG_END  shift, and go to state 126
-
-
-State 96
-
-   42 textTag: EM_BEGIN textTags • EM_END
-
-    EM_END  shift, and go to state 127
-
-
-State 97
-
-   43 textTag: BLOCKQUOTE_BEGIN textTags • BLOCKQUOTE_END
-
-    BLOCKQUOTE_END  shift, and go to state 128
-
-
-State 98
-
-   44 textTag: PRE_BEGIN pretag • textTags PRE_END
-
-    UL_BEGIN          shift, and go to state 24
-    PARA_BEGIN        shift, and go to state 53
-    A_BEGIN           shift, and go to state 54
-    STRONG_BEGIN      shift, and go to state 55
-    EM_BEGIN          shift, and go to state 56
-    BLOCKQUOTE_BEGIN  shift, and go to state 57
-    PRE_BEGIN         shift, and go to state 58
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 59
-    SPACE             shift, and go to state 60
-    NEWLINE           shift, and go to state 61
-    IMG_BEGIN         shift, and go to state 62
-
-    textTags  go to state 129
-    textTag   go to state 64
-    list      go to state 65
-
-
-State 99
-
-   47 textTag: IMG_BEGIN image • RANGBRACKET
-
-    RANGBRACKET  shift, and go to state 130
-
-
-State 100
-
-   22 semanticTags: H1_BEGIN textTags H1_END •
-
-    $default  reduce using rule 22 (semanticTags)
-
-
-State 101
-
-   38 textTags: textTag textTags •
-
-    $default  reduce using rule 38 (textTags)
-
-
-State 102
-
-   23 semanticTags: H2_BEGIN textTags H2_END •
-
-    $default  reduce using rule 23 (semanticTags)
-
-
-State 103
-
-   24 semanticTags: H3_BEGIN textTags H3_END •
-
-    $default  reduce using rule 24 (semanticTags)
-
-
-State 104
-
-   25 semanticTags: H4_BEGIN textTags H4_END •
-
-    $default  reduce using rule 25 (semanticTags)
-
-
-State 105
-
-   26 semanticTags: H5_BEGIN textTags H5_END •
-
-    $default  reduce using rule 26 (semanticTags)
-
-
-State 106
-
-   27 semanticTags: PARA_BEGIN textTags PARA_END •
-
-    $default  reduce using rule 27 (semanticTags)
-
-
-State 107
-
-   18 semanticTags: SECTION_BEGIN bodyContent SECTION_END •
-
-    $default  reduce using rule 18 (semanticTags)
-
-
-State 108
-
-   19 semanticTags: ARTICLE_BEGIN bodyContent ARTICLE_END •
-
-    $default  reduce using rule 19 (semanticTags)
-
-
-State 109
-
-   20 semanticTags: ASIDE_BEGIN bodyContent ASIDE_END •
-
-    $default  reduce using rule 20 (semanticTags)
-
-
-State 110
-
-   21 semanticTags: FOOTER_BEGIN bodyContent FOOTER_END •
-
-    $default  reduce using rule 21 (semanticTags)
-
-
-State 111
-
-   10 textContent: textContent • text
-   56 anchor: HREF textContent • DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent
-
-    TEXT                 shift, and go to state 17
-    SPACE                shift, and go to state 18
-    NEWLINE              shift, and go to state 19
-    DOUBLEINVERTEDCOMMA  shift, and go to state 131
-
-    text  go to state 20
-
-
-State 112
-
-   33 semanticTags: A_BEGIN anchor A_END •
+   33 semanticTags: list •
 
     $default  reduce using rule 33 (semanticTags)
 
 
-State 113
+State 53
 
-   28 semanticTags: STRONG_BEGIN textTags STRONG_END •
+   18 semanticTags: NAV_BEGIN bodyContent • NAV_END
 
-    $default  reduce using rule 28 (semanticTags)
+    NAV_END  shift, and go to state 98
 
 
-State 114
+State 54
 
-   29 semanticTags: EM_BEGIN textTags EM_END •
+   62 listElements: LI_BEGIN • bodyContent LI_END
 
-    $default  reduce using rule 29 (semanticTags)
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
+
+    bodyContent   go to state 99
+    semanticTags  go to state 51
+    list          go to state 52
+
 
+State 55
 
-State 115
+   60 list: UL_BEGIN listElements • UL_END
+   61 listElements: listElements • LI_BEGIN bodyContent LI_END
 
-   30 semanticTags: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END •
+    UL_END    shift, and go to state 100
+    LI_BEGIN  shift, and go to state 101
 
-    $default  reduce using rule 30 (semanticTags)
 
+State 56
 
-State 116
+   17 semanticTags: HEADER_BEGIN bodyContent • HEADER_END
 
-   31 semanticTags: PRE_BEGIN pretag textTags • PRE_END
+    HEADER_END  shift, and go to state 102
+
+
+State 57
+
+   44 textTag: PARA_BEGIN • textTags PARA_END
+
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
+
+    textTags  go to state 103
+    textTag   go to state 71
+    list      go to state 72
+
+
+State 58
+
+   50 textTag: A_BEGIN • anchor A_END
+
+    HREF  shift, and go to state 82
+
+    anchor  go to state 104
+
+
+State 59
+
+   45 textTag: STRONG_BEGIN • textTags STRONG_END
+
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
+
+    textTags  go to state 105
+    textTag   go to state 71
+    list      go to state 72
+
+
+State 60
+
+   46 textTag: EM_BEGIN • textTags EM_END
+
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
+
+    textTags  go to state 106
+    textTag   go to state 71
+    list      go to state 72
+
+
+State 61
+
+   52 textTag: U_BEGIN • textTags U_END
+
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
+
+    textTags  go to state 107
+    textTag   go to state 71
+    list      go to state 72
+
+
+State 62
+
+   54 textTag: SMALL_BEGIN • textTags SMALL_END
 
-    PRE_END  shift, and go to state 132
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
+    textTags  go to state 108
+    textTag   go to state 71
+    list      go to state 72
 
-State 117
 
-   52 list: OL_BEGIN listElements OL_END •
+State 63
 
-    $default  reduce using rule 52 (list)
+   47 textTag: BLOCKQUOTE_BEGIN • textTags BLOCKQUOTE_END
 
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-State 118
+    textTags  go to state 109
+    textTag   go to state 71
+    list      go to state 72
 
-   10 textContent: textContent • text
-   59 imageAttributes: SRC textContent •
 
-    TEXT     shift, and go to state 17
-    SPACE    shift, and go to state 18
-    NEWLINE  shift, and go to state 19
+State 64
 
-    $default  reduce using rule 59 (imageAttributes)
+   48 textTag: PRE_BEGIN • pretag textTags PRE_END
 
-    text  go to state 20
+    $default  reduce using rule 58 (pretag)
 
+    pretag  go to state 110
 
-State 119
 
-   10 textContent: textContent • text
-   60 imageAttributes: ALT textContent •
+State 65
 
-    TEXT     shift, and go to state 17
-    SPACE    shift, and go to state 18
-    NEWLINE  shift, and go to state 19
+   53 textTag: CODE_BEGIN • textTags CODE_END
 
-    $default  reduce using rule 60 (imageAttributes)
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
-    text  go to state 20
+    textTags  go to state 111
+    textTag   go to state 71
+    list      go to state 72
 
 
-State 120
+State 66
 
-   34 semanticTags: IMG_BEGIN image RANGBRACKET •
+   55 textTag: TEXT •
 
-    $default  reduce using rule 34 (semanticTags)
+    $default  reduce using rule 55 (textTag)
 
 
-State 121
+State 67
 
-   57 image: imageAttributes DOUBLEINVERTEDCOMMA • image
+   56 textTag: SPACE •
 
-    SRC  shift, and go to state 82
-    ALT  shift, and go to state 83
+    $default  reduce using rule 56 (textTag)
 
-    $default  reduce using rule 58 (image)
 
-    image            go to state 133
-    imageAttributes  go to state 85
+State 68
 
+   57 textTag: NEWLINE •
 
-State 122
+    $default  reduce using rule 57 (textTag)
 
-   55 listElements: LI_BEGIN bodyContent LI_END •
 
-    $default  reduce using rule 55 (listElements)
+State 69
 
+   51 textTag: IMG_BEGIN • image RANGBRACKET
 
-State 123
+    SRC  shift, and go to state 92
+    ALT  shift, and go to state 93
 
-   54 listElements: listElements LI_BEGIN bodyContent • LI_END
+    $default  reduce using rule 65 (image)
 
-    LI_END  shift, and go to state 134
+    image            go to state 112
+    imageAttributes  go to state 95
 
 
-State 124
+State 70
 
-   40 textTag: PARA_BEGIN textTags PARA_END •
+   23 semanticTags: H1_BEGIN textTags • H1_END
 
-    $default  reduce using rule 40 (textTag)
+    H1_END  shift, and go to state 113
 
 
-State 125
+State 71
 
-   46 textTag: A_BEGIN anchor A_END •
+   42 textTags: textTag • textTags
+   43         | textTag •
 
-    $default  reduce using rule 46 (textTag)
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
 
+    $default  reduce using rule 43 (textTags)
 
-State 126
+    textTags  go to state 114
+    textTag   go to state 71
+    list      go to state 72
 
-   41 textTag: STRONG_BEGIN textTags STRONG_END •
 
-    $default  reduce using rule 41 (textTag)
+State 72
 
+   49 textTag: list •
 
-State 127
+    $default  reduce using rule 49 (textTag)
 
-   42 textTag: EM_BEGIN textTags EM_END •
 
-    $default  reduce using rule 42 (textTag)
+State 73
 
+   24 semanticTags: H2_BEGIN textTags • H2_END
 
-State 128
+    H2_END  shift, and go to state 115
 
-   43 textTag: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END •
 
-    $default  reduce using rule 43 (textTag)
+State 74
 
+   25 semanticTags: H3_BEGIN textTags • H3_END
 
-State 129
+    H3_END  shift, and go to state 116
 
-   44 textTag: PRE_BEGIN pretag textTags • PRE_END
 
-    PRE_END  shift, and go to state 135
+State 75
 
+   26 semanticTags: H4_BEGIN textTags • H4_END
 
-State 130
+    H4_END  shift, and go to state 117
 
-   47 textTag: IMG_BEGIN image RANGBRACKET •
 
-    $default  reduce using rule 47 (textTag)
+State 76
 
+   27 semanticTags: H5_BEGIN textTags • H5_END
 
-State 131
+    H5_END  shift, and go to state 118
 
-   56 anchor: HREF textContent DOUBLEINVERTEDCOMMA • RANGBRACKET bodyContent
+
+State 77
+
+   28 semanticTags: PARA_BEGIN textTags • PARA_END
+
+    PARA_END  shift, and go to state 119
+
+
+State 78
+
+   19 semanticTags: SECTION_BEGIN bodyContent • SECTION_END
+
+    SECTION_END  shift, and go to state 120
+
+
+State 79
+
+   20 semanticTags: ARTICLE_BEGIN bodyContent • ARTICLE_END
+
+    ARTICLE_END  shift, and go to state 121
+
+
+State 80
+
+   21 semanticTags: ASIDE_BEGIN bodyContent • ASIDE_END
+
+    ASIDE_END  shift, and go to state 122
+
+
+State 81
+
+   22 semanticTags: FOOTER_BEGIN bodyContent • FOOTER_END
+
+    FOOTER_END  shift, and go to state 123
+
+
+State 82
+
+   63 anchor: HREF • textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent
+
+    $default  reduce using rule 10 (textContent)
+
+    textContent  go to state 124
+
+
+State 83
+
+   34 semanticTags: A_BEGIN anchor • A_END
+
+    A_END  shift, and go to state 125
+
+
+State 84
+
+   29 semanticTags: STRONG_BEGIN textTags • STRONG_END
+
+    STRONG_END  shift, and go to state 126
+
+
+State 85
+
+   30 semanticTags: EM_BEGIN textTags • EM_END
+
+    EM_END  shift, and go to state 127
+
+
+State 86
+
+   36 semanticTags: U_BEGIN textTags • U_END
+
+    U_END  shift, and go to state 128
+
+
+State 87
+
+   38 semanticTags: SMALL_BEGIN textTags • SMALL_END
+
+    SMALL_END  shift, and go to state 129
+
+
+State 88
+
+   31 semanticTags: BLOCKQUOTE_BEGIN textTags • BLOCKQUOTE_END
+
+    BLOCKQUOTE_END  shift, and go to state 130
+
+
+State 89
+
+   32 semanticTags: PRE_BEGIN pretag • textTags PRE_END
+
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
+
+    textTags  go to state 131
+    textTag   go to state 71
+    list      go to state 72
+
+
+State 90
+
+   37 semanticTags: CODE_BEGIN textTags • CODE_END
+
+    CODE_END  shift, and go to state 132
+
+
+State 91
+
+   59 list: OL_BEGIN listElements • OL_END
+   61 listElements: listElements • LI_BEGIN bodyContent LI_END
+
+    LI_BEGIN  shift, and go to state 101
+    OL_END    shift, and go to state 133
+
+
+State 92
+
+   66 imageAttributes: SRC • textContent
+
+    $default  reduce using rule 10 (textContent)
+
+    textContent  go to state 134
+
+
+State 93
+
+   67 imageAttributes: ALT • textContent
+
+    $default  reduce using rule 10 (textContent)
+
+    textContent  go to state 135
+
+
+State 94
+
+   35 semanticTags: IMG_BEGIN image • RANGBRACKET
 
     RANGBRACKET  shift, and go to state 136
 
 
-State 132
+State 95
 
-   31 semanticTags: PRE_BEGIN pretag textTags PRE_END •
+   64 image: imageAttributes • DOUBLEINVERTEDCOMMA image
+
+    DOUBLEINVERTEDCOMMA  shift, and go to state 137
+
+
+State 96
+
+    9 body: BODY_BEGIN bodyContent BODY_END •
+
+    $default  reduce using rule 9 (body)
+
+
+State 97
+
+   15 bodyContent: semanticTags bodyContent •
+
+    $default  reduce using rule 15 (bodyContent)
+
+
+State 98
+
+   18 semanticTags: NAV_BEGIN bodyContent NAV_END •
+
+    $default  reduce using rule 18 (semanticTags)
+
+
+State 99
+
+   62 listElements: LI_BEGIN bodyContent • LI_END
+
+    LI_END  shift, and go to state 138
+
+
+State 100
+
+   60 list: UL_BEGIN listElements UL_END •
+
+    $default  reduce using rule 60 (list)
+
+
+State 101
+
+   61 listElements: listElements LI_BEGIN • bodyContent LI_END
+
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
+
+    bodyContent   go to state 139
+    semanticTags  go to state 51
+    list          go to state 52
+
+
+State 102
+
+   17 semanticTags: HEADER_BEGIN bodyContent HEADER_END •
+
+    $default  reduce using rule 17 (semanticTags)
+
+
+State 103
+
+   44 textTag: PARA_BEGIN textTags • PARA_END
+
+    PARA_END  shift, and go to state 140
+
+
+State 104
+
+   50 textTag: A_BEGIN anchor • A_END
+
+    A_END  shift, and go to state 141
+
+
+State 105
+
+   45 textTag: STRONG_BEGIN textTags • STRONG_END
+
+    STRONG_END  shift, and go to state 142
+
+
+State 106
+
+   46 textTag: EM_BEGIN textTags • EM_END
+
+    EM_END  shift, and go to state 143
+
+
+State 107
+
+   52 textTag: U_BEGIN textTags • U_END
+
+    U_END  shift, and go to state 144
+
+
+State 108
+
+   54 textTag: SMALL_BEGIN textTags • SMALL_END
+
+    SMALL_END  shift, and go to state 145
+
+
+State 109
+
+   47 textTag: BLOCKQUOTE_BEGIN textTags • BLOCKQUOTE_END
+
+    BLOCKQUOTE_END  shift, and go to state 146
+
+
+State 110
+
+   48 textTag: PRE_BEGIN pretag • textTags PRE_END
+
+    UL_BEGIN          shift, and go to state 25
+    PARA_BEGIN        shift, and go to state 57
+    A_BEGIN           shift, and go to state 58
+    STRONG_BEGIN      shift, and go to state 59
+    EM_BEGIN          shift, and go to state 60
+    U_BEGIN           shift, and go to state 61
+    SMALL_BEGIN       shift, and go to state 62
+    BLOCKQUOTE_BEGIN  shift, and go to state 63
+    PRE_BEGIN         shift, and go to state 64
+    CODE_BEGIN        shift, and go to state 65
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 66
+    SPACE             shift, and go to state 67
+    NEWLINE           shift, and go to state 68
+    IMG_BEGIN         shift, and go to state 69
+
+    textTags  go to state 147
+    textTag   go to state 71
+    list      go to state 72
+
+
+State 111
+
+   53 textTag: CODE_BEGIN textTags • CODE_END
+
+    CODE_END  shift, and go to state 148
+
+
+State 112
+
+   51 textTag: IMG_BEGIN image • RANGBRACKET
+
+    RANGBRACKET  shift, and go to state 149
+
+
+State 113
+
+   23 semanticTags: H1_BEGIN textTags H1_END •
+
+    $default  reduce using rule 23 (semanticTags)
+
+
+State 114
+
+   42 textTags: textTag textTags •
+
+    $default  reduce using rule 42 (textTags)
+
+
+State 115
+
+   24 semanticTags: H2_BEGIN textTags H2_END •
+
+    $default  reduce using rule 24 (semanticTags)
+
+
+State 116
+
+   25 semanticTags: H3_BEGIN textTags H3_END •
+
+    $default  reduce using rule 25 (semanticTags)
+
+
+State 117
+
+   26 semanticTags: H4_BEGIN textTags H4_END •
+
+    $default  reduce using rule 26 (semanticTags)
+
+
+State 118
+
+   27 semanticTags: H5_BEGIN textTags H5_END •
+
+    $default  reduce using rule 27 (semanticTags)
+
+
+State 119
+
+   28 semanticTags: PARA_BEGIN textTags PARA_END •
+
+    $default  reduce using rule 28 (semanticTags)
+
+
+State 120
+
+   19 semanticTags: SECTION_BEGIN bodyContent SECTION_END •
+
+    $default  reduce using rule 19 (semanticTags)
+
+
+State 121
+
+   20 semanticTags: ARTICLE_BEGIN bodyContent ARTICLE_END •
+
+    $default  reduce using rule 20 (semanticTags)
+
+
+State 122
+
+   21 semanticTags: ASIDE_BEGIN bodyContent ASIDE_END •
+
+    $default  reduce using rule 21 (semanticTags)
+
+
+State 123
+
+   22 semanticTags: FOOTER_BEGIN bodyContent FOOTER_END •
+
+    $default  reduce using rule 22 (semanticTags)
+
+
+State 124
+
+   11 textContent: textContent • text
+   63 anchor: HREF textContent • DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent
+
+    TEXT                 shift, and go to state 18
+    SPACE                shift, and go to state 19
+    NEWLINE              shift, and go to state 20
+    DOUBLEINVERTEDCOMMA  shift, and go to state 150
+
+    text  go to state 21
+
+
+State 125
+
+   34 semanticTags: A_BEGIN anchor A_END •
+
+    $default  reduce using rule 34 (semanticTags)
+
+
+State 126
+
+   29 semanticTags: STRONG_BEGIN textTags STRONG_END •
+
+    $default  reduce using rule 29 (semanticTags)
+
+
+State 127
+
+   30 semanticTags: EM_BEGIN textTags EM_END •
+
+    $default  reduce using rule 30 (semanticTags)
+
+
+State 128
+
+   36 semanticTags: U_BEGIN textTags U_END •
+
+    $default  reduce using rule 36 (semanticTags)
+
+
+State 129
+
+   38 semanticTags: SMALL_BEGIN textTags SMALL_END •
+
+    $default  reduce using rule 38 (semanticTags)
+
+
+State 130
+
+   31 semanticTags: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END •
 
     $default  reduce using rule 31 (semanticTags)
 
 
+State 131
+
+   32 semanticTags: PRE_BEGIN pretag textTags • PRE_END
+
+    PRE_END  shift, and go to state 151
+
+
+State 132
+
+   37 semanticTags: CODE_BEGIN textTags CODE_END •
+
+    $default  reduce using rule 37 (semanticTags)
+
+
 State 133
 
-   57 image: imageAttributes DOUBLEINVERTEDCOMMA image •
+   59 list: OL_BEGIN listElements OL_END •
 
-    $default  reduce using rule 57 (image)
+    $default  reduce using rule 59 (list)
 
 
 State 134
 
-   54 listElements: listElements LI_BEGIN bodyContent LI_END •
+   11 textContent: textContent • text
+   66 imageAttributes: SRC textContent •
 
-    $default  reduce using rule 54 (listElements)
+    TEXT     shift, and go to state 18
+    SPACE    shift, and go to state 19
+    NEWLINE  shift, and go to state 20
+
+    $default  reduce using rule 66 (imageAttributes)
+
+    text  go to state 21
 
 
 State 135
 
-   44 textTag: PRE_BEGIN pretag textTags PRE_END •
+   11 textContent: textContent • text
+   67 imageAttributes: ALT textContent •
 
-    $default  reduce using rule 44 (textTag)
+    TEXT     shift, and go to state 18
+    SPACE    shift, and go to state 19
+    NEWLINE  shift, and go to state 20
+
+    $default  reduce using rule 67 (imageAttributes)
+
+    text  go to state 21
 
 
 State 136
 
-   56 anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET • bodyContent
+   35 semanticTags: IMG_BEGIN image RANGBRACKET •
 
-    NAV_BEGIN         shift, and go to state 23
-    UL_BEGIN          shift, and go to state 24
-    HEADER_BEGIN      shift, and go to state 25
-    H1_BEGIN          shift, and go to state 26
-    H2_BEGIN          shift, and go to state 27
-    H3_BEGIN          shift, and go to state 28
-    H4_BEGIN          shift, and go to state 29
-    H5_BEGIN          shift, and go to state 30
-    PARA_BEGIN        shift, and go to state 31
-    SECTION_BEGIN     shift, and go to state 32
-    ARTICLE_BEGIN     shift, and go to state 33
-    ASIDE_BEGIN       shift, and go to state 34
-    FOOTER_BEGIN      shift, and go to state 35
-    A_BEGIN           shift, and go to state 36
-    STRONG_BEGIN      shift, and go to state 37
-    EM_BEGIN          shift, and go to state 38
-    BLOCKQUOTE_BEGIN  shift, and go to state 39
-    PRE_BEGIN         shift, and go to state 40
-    OL_BEGIN          shift, and go to state 41
-    TEXT              shift, and go to state 42
-    SPACE             shift, and go to state 43
-    NEWLINE           shift, and go to state 44
-    IMG_BEGIN         shift, and go to state 45
-
-    bodyContent   go to state 137
-    semanticTags  go to state 47
-    list          go to state 48
+    $default  reduce using rule 35 (semanticTags)
 
 
 State 137
 
-   56 anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent •
+   64 image: imageAttributes DOUBLEINVERTEDCOMMA • image
 
-    $default  reduce using rule 56 (anchor)
+    SRC  shift, and go to state 92
+    ALT  shift, and go to state 93
+
+    $default  reduce using rule 65 (image)
+
+    image            go to state 152
+    imageAttributes  go to state 95
+
+
+State 138
+
+   62 listElements: LI_BEGIN bodyContent LI_END •
+
+    $default  reduce using rule 62 (listElements)
+
+
+State 139
+
+   61 listElements: listElements LI_BEGIN bodyContent • LI_END
+
+    LI_END  shift, and go to state 153
+
+
+State 140
+
+   44 textTag: PARA_BEGIN textTags PARA_END •
+
+    $default  reduce using rule 44 (textTag)
+
+
+State 141
+
+   50 textTag: A_BEGIN anchor A_END •
+
+    $default  reduce using rule 50 (textTag)
+
+
+State 142
+
+   45 textTag: STRONG_BEGIN textTags STRONG_END •
+
+    $default  reduce using rule 45 (textTag)
+
+
+State 143
+
+   46 textTag: EM_BEGIN textTags EM_END •
+
+    $default  reduce using rule 46 (textTag)
+
+
+State 144
+
+   52 textTag: U_BEGIN textTags U_END •
+
+    $default  reduce using rule 52 (textTag)
+
+
+State 145
+
+   54 textTag: SMALL_BEGIN textTags SMALL_END •
+
+    $default  reduce using rule 54 (textTag)
+
+
+State 146
+
+   47 textTag: BLOCKQUOTE_BEGIN textTags BLOCKQUOTE_END •
+
+    $default  reduce using rule 47 (textTag)
+
+
+State 147
+
+   48 textTag: PRE_BEGIN pretag textTags • PRE_END
+
+    PRE_END  shift, and go to state 154
+
+
+State 148
+
+   53 textTag: CODE_BEGIN textTags CODE_END •
+
+    $default  reduce using rule 53 (textTag)
+
+
+State 149
+
+   51 textTag: IMG_BEGIN image RANGBRACKET •
+
+    $default  reduce using rule 51 (textTag)
+
+
+State 150
+
+   63 anchor: HREF textContent DOUBLEINVERTEDCOMMA • RANGBRACKET bodyContent
+
+    RANGBRACKET  shift, and go to state 155
+
+
+State 151
+
+   32 semanticTags: PRE_BEGIN pretag textTags PRE_END •
+
+    $default  reduce using rule 32 (semanticTags)
+
+
+State 152
+
+   64 image: imageAttributes DOUBLEINVERTEDCOMMA image •
+
+    $default  reduce using rule 64 (image)
+
+
+State 153
+
+   61 listElements: listElements LI_BEGIN bodyContent LI_END •
+
+    $default  reduce using rule 61 (listElements)
+
+
+State 154
+
+   48 textTag: PRE_BEGIN pretag textTags PRE_END •
+
+    $default  reduce using rule 48 (textTag)
+
+
+State 155
+
+   63 anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET • bodyContent
+
+    NAV_BEGIN         shift, and go to state 24
+    UL_BEGIN          shift, and go to state 25
+    HEADER_BEGIN      shift, and go to state 26
+    H1_BEGIN          shift, and go to state 27
+    H2_BEGIN          shift, and go to state 28
+    H3_BEGIN          shift, and go to state 29
+    H4_BEGIN          shift, and go to state 30
+    H5_BEGIN          shift, and go to state 31
+    PARA_BEGIN        shift, and go to state 32
+    SECTION_BEGIN     shift, and go to state 33
+    ARTICLE_BEGIN     shift, and go to state 34
+    ASIDE_BEGIN       shift, and go to state 35
+    FOOTER_BEGIN      shift, and go to state 36
+    A_BEGIN           shift, and go to state 37
+    STRONG_BEGIN      shift, and go to state 38
+    EM_BEGIN          shift, and go to state 39
+    U_BEGIN           shift, and go to state 40
+    SMALL_BEGIN       shift, and go to state 41
+    BLOCKQUOTE_BEGIN  shift, and go to state 42
+    PRE_BEGIN         shift, and go to state 43
+    CODE_BEGIN        shift, and go to state 44
+    OL_BEGIN          shift, and go to state 45
+    TEXT              shift, and go to state 46
+    SPACE             shift, and go to state 47
+    NEWLINE           shift, and go to state 48
+    IMG_BEGIN         shift, and go to state 49
+
+    bodyContent   go to state 156
+    semanticTags  go to state 51
+    list          go to state 52
+
+
+State 156
+
+   63 anchor: HREF textContent DOUBLEINVERTEDCOMMA RANGBRACKET bodyContent •
+
+    $default  reduce using rule 63 (anchor)

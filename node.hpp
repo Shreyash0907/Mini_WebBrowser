@@ -53,7 +53,10 @@ enum type{
     A,
     Newline,
     Space, 
-    UList
+    UList,
+    Underline,
+    Small,
+    Code
 };  
 
 

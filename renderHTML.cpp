@@ -25,28 +25,258 @@
 #include <QLineEdit>
 #include <QScrollArea>
 #include <QListWidget>
-
+#include <QSettings>
+#include <bits/stdc++.h>
 
 using namespace std;
-// Custom Widget Class for Painting
+
+using Time = std::chrono::system_clock::time_point; 
+
+class MainWindow : public QWidget {
+public:
+
+    MainWindow() {
+        tabWidget = new QTabWidget(this);
+        tabWidget->setWindowTitle("My Browser");
+        
+
+        tabWidget->setTabsClosable(true);
+
+        connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
+
+        QPushButton *addTabButton = new QPushButton("Search", this);
+        addTabButton->setFixedWidth(150);
+        addTabButton->setFixedHeight(40);
+        QPushButton *historyTabButton = new QPushButton("History", this);
+        historyTabButton->setFixedWidth(150);
+        historyTabButton->setFixedHeight(40);
+        connect(addTabButton, &QPushButton::clicked, this, &MainWindow::addTab);
+        connect(historyTabButton, &QPushButton::clicked, this, &MainWindow::showHistory);
+        QPushButton *backButton = new QPushButton("<-",this);
+        backButton->setFixedSize(40, 40); // Set a small size for the button
+
+        connect(backButton, &QPushButton::clicked, this, &MainWindow::goBack);
+
+        QPushButton *forwardButton = new QPushButton("->",this);
+        forwardButton->setFixedSize(40, 40); // Set a small size for the button
+
+        connect(forwardButton, &QPushButton::clicked, this, &MainWindow::goForward);
+
+
+        lineEdit = new QLineEdit(this);
+        lineEdit->setPlaceholderText("Enter text here...");
+        lineEdit->setFixedHeight(40); // Set the same width as the button
+        QFont font = lineEdit->font();
+        font.setPointSize(14);
+        lineEdit->setFont(font);
+
+        listWidget = new QListWidget(new QWidget());
+
+        connect(listWidget, &QListWidget::itemClicked, this, &MainWindow::onItemClicked);
+        
+
+        // Create a horizontal layout for the button and line edit
+        QHBoxLayout *hLayout = new QHBoxLayout();
+        hLayout->addWidget(backButton);
+        hLayout->addWidget(forwardButton);
+        hLayout->addWidget(lineEdit);
+        hLayout->addWidget(addTabButton);
+        hLayout->addWidget(historyTabButton);
+
+        // Main vertical layout
+        QVBoxLayout *layout = new QVBoxLayout(this);
+        layout->addLayout(hLayout); // Add the horizontal layout
+        layout->addWidget(tabWidget);
+
+        setLayout(layout);
+        resize(1700, 1000);
+        
+        
+    }
+
+    ~MainWindow(){
+        QSettings settings("MyCompany", "MyApp");
+        settings.clear();
+        int cnt = tabWidget->count();
+        for(int i = 0 ; i < cnt; i++){
+            string str = tabWidget->tabText(i).toStdString();
+            string url = urlMap[str];
+            settings.setValue(QString::fromStdString(url), 1);
+        }
+    }
+
+    void renderHistory(string URL);
+
+    void renderAnchor(string URL);
+
+    void loadData(){
+        QSettings settings("MyCompany", "MyApp");
+        QStringList keys = settings.allKeys();
+    
+        for (const QString &key : keys) {
+            QVariant value = settings.value(key);
+            string url = key.toStdString();
+            cout<<"setting url "<<url<<" "<<std::flush;
+            renderHistory(url);
+        }
+    }
+
+    void goBack(){
+        int curr = tabWidget->currentIndex();
+        string title = tabWidget->tabText(curr).toStdString();
+
+        if(!undo[title].empty()){
+            tabWidget->removeTab(curr);
+        }
+    }
+
+    void goForward(){
+        int curr = tabWidget->currentIndex();
+        string title = tabWidget->tabText(curr).toStdString();
+
+    }
+    
+
+private slots:
+    // Slot to add a new tab
+    void addTab();
+
+    void onItemClicked(QListWidgetItem *item){
+
+        cout<<"clicked "<<std::flush;
+        QString itemText = item->text();
+
+        string temp;
+        for(auto i: tabMap){
+            if(i.first == itemText){
+                temp = i.second.first;
+                cout<<"found";
+            }
+        }
+        cout<<temp<<"  url";
+        renderHistory(temp);
+
+    }
+
+    void closeTab(int index) {
+
+        if (tabWidget->count() > 0) {
+            tabWidget->removeTab(index);
+        }
+    }
+
+    void showHistory(){
+        QWidget *newTab = new QWidget();
+        QVBoxLayout *layout = new QVBoxLayout(newTab);
+
+
+        for (auto it = tabMap.rbegin(); it != tabMap.rend(); ++it) {
+
+            const auto &pair = *it;
+            QListWidgetItem *item = new QListWidgetItem(pair.first);
+        
+            QFont font = item->font();
+            font.setPointSize(14); 
+
+            item->setFont(font);
+
+            listWidget->addItem(item);
+        }
+
+        layout->addWidget(listWidget);
+
+        tabWidget->addTab(newTab, "History");
+        tabWidget->setCurrentWidget(newTab);
+        
+    }
+
+
+    void refereshHistoryTab(){
+
+        int index = -1;
+        for (int i = 0; i < tabWidget->count(); ++i) {
+            if (tabWidget->tabText(i) == "History") {
+                index = i;  
+            }
+        }
+
+        if(index != -1){
+
+
+            QWidget *newTab = new QWidget();
+            QVBoxLayout *layout = new QVBoxLayout(newTab);
+
+            
+            listWidget->clear();
+
+
+            for (auto it = tabMap.rbegin(); it != tabMap.rend(); ++it) {
+               
+                const auto &pair = *it;
+                auto epoch = std::chrono::system_clock::to_time_t(pair.second.second);
+                QDateTime dateTime = QDateTime::fromSecsSinceEpoch(epoch);
+
+                QString timeString = dateTime.toString("yyyy-MM-dd HH:mm:ss");
+
+                int le = pair.first.length();
+
+                QString space = " ";
+                QString title = pair.first;
+                
+                for(int i = le; i <= 60; i++){
+                    title.append(space);
+                }
+                            
+                QListWidgetItem *item = new QListWidgetItem(pair.first);
+ 
+                QFont font = item->font();
+                font.setPointSize(14); 
+
+                item->setFont(font);
+
+                listWidget->addItem(item);
+                string url = pair.second.first;
+                
+
+            }
+
+            layout->addWidget(listWidget);
+
+            tabWidget->removeTab(index); 
+            tabWidget->insertTab(index, newTab, "History"); 
+            }
+        cout<<index<<" index of History"<<std::endl;
+
+    }
+
+private:
+    QTabWidget *tabWidget;
+    QLineEdit *lineEdit;
+    QListWidget *listWidget;
+    std::vector<std::pair<QString, pair<string,Time>>> tabMap;
+    unordered_map<string,  string> urlMap;
+    map<string, stack<QWidget*> > undo, redo;
+
+};
+
+
 class RenderTabWidget : public QWidget {
 
 private:
      Node* root;
      int cnt = 0;
+     MainWindow* mainWindow;
 public:
-    RenderTabWidget(Node* rootNode, QWidget *parent = nullptr)
-        : QWidget(parent), root(rootNode) {
-            // QLabel *label = new QLabel(this);
-            // QLabel *label1 = new QLabel(this);
+    RenderTabWidget(Node* rootNode,MainWindow* parentWindow, QWidget *parent = nullptr)
+        : QWidget(parent), root(rootNode),mainWindow(parentWindow) {
+
             this->setCursor(Qt::ArrowCursor);
             textEdit = new QTextEdit(this);
             textEdit->setReadOnly(true);
             textEdit->setFocusPolicy(Qt::NoFocus);
             textEdit->setCursor(Qt::ArrowCursor);
             textEdit->setTextInteractionFlags(Qt::NoTextInteraction);
-        // label->setText("This is a very\n long text...");
-        // label1->setText("This is a very\n long text...");
+
         networkManager = new QNetworkAccessManager(this);
         connect(networkManager, &QNetworkAccessManager::finished, this, &RenderTabWidget::onImageDownloaded);
 
@@ -57,7 +287,7 @@ public:
         QTextCursor cursor(document);
 
         QScrollArea *scrollArea = new QScrollArea(this);
-        scrollArea->setWidgetResizable(true);  // Make the content resize with the scroll area
+        scrollArea->setWidgetResizable(true); 
         scrollArea->setWidget(textEdit); 
         
 
@@ -67,15 +297,13 @@ public:
         font.setFamily("Times New Roman");
         charFormat.setFont(font);
         cursor.mergeCharFormat(charFormat);
-        renderTags(root, cursor, charFormat);
-        // Optionally, set layout margins to 0 to remove extra space
+        renderTags(root, cursor);
+
         layout->setContentsMargins(0, 0, 0, 0);
-        // Add the label to the layout
-        // layout->addWidget(label);
-        // layout->addWidget(label1);
+
         textEdit->setDocument(document);
         layout->addWidget(scrollArea);
-        // Set the layout for this widget
+
         setLayout(layout);
         }
 
@@ -88,7 +316,7 @@ public:
         if(temp->getType() == 3){
             return string(*temp->getValue());
         }
-        // cout<<temp->getType()<<" ";
+
         string title;
         for(auto i : temp->productions){
             title += getTitle(i);
@@ -101,48 +329,62 @@ public:
 
     }
 protected:
-    void paintEvent(QPaintEvent *event) override {
-        QPainter painter(this);
-        
-    }
+    
     void mousePressEvent(QMouseEvent *event) override {
 
-        
-        // Get the position of the mouse click relative to the widget
         QPoint pos = event->pos();
 
-        // Use QTextEdit or any mechanism you have for rendering to get the cursor
         if (textEdit) {
             QTextCursor cursor = textEdit->cursorForPosition(pos);
 
-            // Check if the clicked position has an anchor (link)
             if (cursor.charFormat().isAnchor()) {
                 QString href = cursor.charFormat().anchorHref();
                 qDebug() << "Anchor clicked:" << href;
-                // Open the link using QDesktopServices
-                QDesktopServices::openUrl(QUrl(href));
+                
+                mainWindow->renderAnchor(href.toStdString());
             }
         }
 
-        // Call the base class implementation to handle other events
         QWidget::mousePressEvent(event);
     }
     void mouseMoveEvent(QMouseEvent *event) override {
-        // Set the cursor to ArrowCursor for any mouse move event
+
         this->setCursor(Qt::ArrowCursor);
         QWidget::mouseMoveEvent(event); 
+    }
+
+    void renderImage(){
+        QNetworkRequest request(imageUrl);
+        networkManager->get(request);
+
     }
 
 private slots:
     void onImageDownloaded(QNetworkReply *reply) {
         if (reply->error() == QNetworkReply::NoError) {
-            // Read the downloaded image data
             QByteArray imageData = reply->readAll();
 
-            // Load the data into QImage
-            image.loadFromData(imageData);
+            QPixmap pixmap;
 
-            // Trigger a repaint to display the image
+            pixmap.loadFromData(imageData);
+            if(pixmap.isNull()){
+                cout<<"image null"<<std::flush;
+                return ;
+            }else{
+                cout<<"image loaded "<<std::flush;
+            }
+            image = pixmap.toImage();
+            if(image.isNull()){
+                cout<<"image null"<<std::flush;
+            }else{
+                cout<<"image not null"<<std::flush;
+            }
+            
+            imageFormat.setName(reply->url().toString()); 
+            imageFormat.setWidth(200); 
+            imageFormat.setHeight(200);
+
+
             update();
         } else {
             qDebug() << "Failed to download image:" << reply->errorString();
@@ -160,8 +402,11 @@ private:
     QImage image;
     QUrl imageUrl;
     QString alt;
+    QTextImageFormat imageFormat;
+
+   
     
-    void renderTags(Node* temp, QTextCursor &cursor, QTextCharFormat &charForm){
+    void renderTags(Node* temp, QTextCursor &cursor){
         if(temp == NULL){
             return;
         }
@@ -170,11 +415,14 @@ private:
 
         QTextCharFormat charFormat = cursor.charFormat();
         QTextBlockFormat blockFormat = cursor.blockFormat();
-        cout<<temp->getType()<<" ";
         switch( temp->getType()){
             case Src:{
                 QString url = QString::fromStdString(*temp->getValue());
                 imageUrl = QUrl(url);
+                renderImage();
+
+                cursor.insertImage(imageFormat);
+                cursor.insertImage(image);
                 break;
             }
             case Alt:{
@@ -183,68 +431,62 @@ private:
             }
             case Image:{
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
+                
                 break;
             }
             case ListElement:{
                 for (auto i : temp->productions) {
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                     if(i->getType() == BodyContent){
                         QString qtitle = QString::fromStdString("\n");
-                        cursor.insertText(qtitle);  // Render list item text
+                        cursor.insertText(qtitle); 
                     }
                     
                 }
                 
                 break;
             }
-            case OList: {  // Ordered List (OL)
-                // Set up the font for list items
+            case OList: {  
                 QFont font = charFormat.font();
-                font.setPointSize(12);  // Set the font size for list items
+                font.setPointSize(12);  
                 charFormat.setFont(font);
                 cursor.mergeCharFormat(charFormat);
 
-                // Set up block format for indentation
                 blockFormat.setTopMargin(4);
                 blockFormat.setBottomMargin(4);
-                blockFormat.setTextIndent(20);  // Indentation for list items
+                blockFormat.setTextIndent(20);  
                 cursor.setBlockFormat(blockFormat);
 
-                // Set up the list format for ordered list (numbers)
                 QTextListFormat listFormat;
-                listFormat.setStyle(QTextListFormat::ListDecimal);  // Numbers for ordered list
-                cursor.insertList(listFormat);  // Create the list in the document
-
-                // Loop through the list items and render them
+                listFormat.setStyle(QTextListFormat::ListDecimal); 
+                cursor.insertList(listFormat);  
                 for (auto i : temp->productions) {
-                    renderTags(i, cursor, charFormat);  // Render list item text
+                    renderTags(i, cursor);
                 }
                 break;
             }
 
-            case UList: {  // Unordered List (UL)
-                // Set up the font for list items
+            case UList: { 
                 QFont font = charFormat.font();
-                font.setPointSize(12);  // Set the font size for list items
+                font.setPointSize(12); 
                 charFormat.setFont(font);
                 cursor.mergeCharFormat(charFormat);
 
-                // Set up block format for indentation
                 blockFormat.setTopMargin(4);
                 blockFormat.setBottomMargin(4);
-                blockFormat.setTextIndent(20);  // Indentation for list items
+                blockFormat.setTextIndent(20);  
                 cursor.setBlockFormat(blockFormat);
 
-                // Set up the list format for unordered list (bullets)
+               
                 QTextListFormat listFormat;
                 listFormat.setStyle(QTextListFormat::ListDisc);  // Bullets for unordered list
                 cursor.insertList(listFormat);  // Create the list in the document
 
                 // Loop through the list items and render them
                 for (auto i : temp->productions) {
-                    renderTags(i, cursor, charFormat);  // Render list item text
+                    renderTags(i, cursor);  // Render list item text
                 }
                 break;
             }
@@ -258,7 +500,7 @@ private:
                 charFormat.setAnchorHref(link);
                 cursor.mergeCharFormat(charFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -272,7 +514,7 @@ private:
                 blockFormat.setBottomMargin(16);           
                 cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -287,7 +529,7 @@ private:
                 blockFormat.setBottomMargin(16);           
                 cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -302,7 +544,7 @@ private:
                 blockFormat.setBottomMargin(12);           
                 cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -317,7 +559,7 @@ private:
                 blockFormat.setBottomMargin(12);           
                 cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -332,7 +574,7 @@ private:
                 blockFormat.setBottomMargin(12);           
                 cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -340,7 +582,7 @@ private:
                 blockFormat.setBottomMargin(8);           
                 cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -351,7 +593,7 @@ private:
                 cursor.mergeCharFormat(charFormat);
 
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -362,7 +604,41 @@ private:
                 cursor.mergeCharFormat(charFormat);
 
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
+                }
+                break;
+            }
+            case Underline:{
+                QFont font = charFormat.font();
+                font.setUnderline(true);
+                charFormat.setFont(font);
+                cursor.mergeCharFormat(charFormat);
+
+                for(auto i : temp->productions){
+                    renderTags(i, cursor);
+                }
+                break;
+            }
+            case Small:{
+                QFont font = charFormat.font();
+                font.setPointSize(10);
+                charFormat.setFont(font);
+                cursor.mergeCharFormat(charFormat);
+
+                for(auto i : temp->productions){
+                    renderTags(i, cursor);
+                }
+                break;
+            }
+            case Code:{
+                QFont font = charFormat.font();
+                font.setFamily("Courier New");  // Use a monospace font
+                font.setPointSize(10);
+                charFormat.setFont(font);
+                cursor.mergeCharFormat(charFormat);
+
+                for(auto i : temp->productions){
+                    renderTags(i, cursor);
                 }
                 break;
             }
@@ -381,24 +657,24 @@ private:
                 // blockFormat.setBottomMargin(12);           
                 // cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
             case Text:{
-                paintText(temp, cursor, charFormat);
+                paintText(temp, cursor);
                 break;
             }
             case TextContent:{
-                paintText(temp, cursor, charFormat);
+                paintText(temp, cursor);
                 break;
             }
             case Space:{
-                paintText(temp, cursor, charFormat);
+                paintText(temp, cursor);
                 break;
             }
             case Newline:{
-                paintText(temp, cursor, charFormat);
+                paintText(temp, cursor);
                 break;
             }
             case Pre:{
@@ -414,13 +690,13 @@ private:
                 blockFormat.setTextIndent(0);  // No indentation
                 cursor.setBlockFormat(blockFormat);
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
                 break;
             }
             default:{
                 for(auto i : temp->productions){
-                    renderTags(i, cursor, charFormat);
+                    renderTags(i, cursor);
                 }
             }
 
@@ -430,9 +706,7 @@ private:
         
         
         
-        // for(auto i : temp->productions){
-        //     renderTags(i,cursor, charFormat);
-        // }
+        
         cursor.setCharFormat(savedCharFormat);  // Restore the original character format
         cursor.setBlockFormat(savedBlockFormat);
         
@@ -440,15 +714,9 @@ private:
 
     
 
-    void renderListElements(Node *temp, QTextCursor &cursor){
-        if(temp == NULL){
-            return;
-        }
+    
 
-
-    }
-
-    void paintText(Node* temp, QTextCursor &cursor, QTextCharFormat &charFormat){
+    void paintText(Node* temp, QTextCursor &cursor){
         if(temp == NULL){
             return;
         }
@@ -460,145 +728,3 @@ private:
     
 };
 
-// Main Window Class
-class MainWindow : public QWidget {
-public:
-    MainWindow() {
-        tabWidget = new QTabWidget(this);
-        tabWidget->setWindowTitle("My Browser");
-
-        tabWidget->setTabsClosable(true);
-
-        connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
-
-        QPushButton *addTabButton = new QPushButton("Search", this);
-        addTabButton->setFixedWidth(150);
-        addTabButton->setFixedHeight(40);
-        QPushButton *historyTabButton = new QPushButton("History", this);
-        historyTabButton->setFixedWidth(150);
-        historyTabButton->setFixedHeight(40);
-        connect(addTabButton, &QPushButton::clicked, this, &MainWindow::addTab);
-        connect(historyTabButton, &QPushButton::clicked, this, &MainWindow::showHistory);
-
-        // Create the QTextEdit section
-        lineEdit = new QLineEdit(this);
-        lineEdit->setPlaceholderText("Enter text here...");
-        lineEdit->setFixedHeight(40); // Set the same width as the button
-        QFont font = lineEdit->font();
-        font.setPointSize(14); // Set the font size to 14 (adjust as needed)
-        lineEdit->setFont(font);
-
-        // Create a horizontal layout for the button and line edit
-        QHBoxLayout *hLayout = new QHBoxLayout();
-        hLayout->addWidget(lineEdit);
-        hLayout->addWidget(addTabButton);
-        hLayout->addWidget(historyTabButton);
-
-        // Main vertical layout
-        QVBoxLayout *layout = new QVBoxLayout(this);
-        layout->addLayout(hLayout); // Add the horizontal layout
-        layout->addWidget(tabWidget);
-
-        setLayout(layout);
-        resize(1700, 1000);
-    }
-
-private slots:
-    // Slot to add a new tab
-    void addTab();
-
-    // Slot to handle the tab close request
-    void closeTab(int index) {
-        // Check if the tab exists and confirm the close operation
-        if (tabWidget->count() > 0) {
-            tabWidget->removeTab(index);
-        }
-    }
-
-    void showHistory(){
-        QWidget *newTab = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(newTab);
-
-    // Create a QListWidget to display the QString keys
-    QListWidget *listWidget = new QListWidget(newTab);
-
-    // Iterate through the tabMap and add the QString keys to the QListWidget
-    for (const auto &pair : tabMap) {
-        QListWidgetItem *item = new QListWidgetItem(pair.first);
-    
-        // Set the font size for this individual item
-        QFont font = item->font();
-        font.setPointSize(14); 
-        // font.setBold(true);
-        item->setFont(font);
-
-        listWidget->addItem(item);
-    }
-
-    // Add the list widget to the layout
-    layout->addWidget(listWidget);
-
-    // Add the new tab to the QTabWidget
-    tabWidget->addTab(newTab, "History");
-    tabWidget->setCurrentWidget(newTab);
-    }
-
-
-    void refereshHistoryTab(){
-        // int index = tabWidget->indexOf(tabWidget->findChild<QWidget*>("listWidget"));
-        int index = -1;
-        for (int i = 0; i < tabWidget->count(); ++i) {
-            if (tabWidget->tabText(i) == "History") {
-                index = i;  // Return the index of the tab whose title matches
-            }
-        }
-
-        if(index != -1){
-            // if (tabMap == nullptr) return; // Check if listWidget has been created
-
-            QWidget *newTab = new QWidget();
-            QVBoxLayout *layout = new QVBoxLayout(newTab);
-
-            // Create a QListWidget to display the QString keys
-            QListWidget *listWidget = new QListWidget(newTab);
-            
-
-            // Iterate through the tabMap and add the QString keys to the QListWidget
-            for (const auto &pair : tabMap) {
-                
-                QListWidgetItem *item = new QListWidgetItem(pair.first);
-    
-                // Set the font size for this individual item
-                QFont font = item->font();
-                font.setPointSize(14); 
-                // font.setBold(true);
-                item->setFont(font);
-
-                listWidget->addItem(item);
-            }
-
-            // Add the list widget to the layout
-            layout->addWidget(listWidget);
-
-            tabWidget->removeTab(index);  // Remove the old tab at index 1
-            tabWidget->insertTab(index, newTab, "History");  // Insert the new tab at index 1
-            }
-        cout<<index<<" index of History"<<std::endl;
-
-    }
-
-private:
-    QTabWidget *tabWidget;
-    QLineEdit *lineEdit;
-    std::map<QString, RenderTabWidget*> tabMap;
-    // QProcess *process;
-};
-
-// int main(int argc, char *argv[]) {
-//     QApplication app(argc, argv);
-
-//     MainWindow window;
-//     window.show();
-
-//     return app.exec();
-// }

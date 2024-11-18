@@ -149,7 +149,7 @@ DOUBLEINVERTEDCOMMA              \"
                                                                             return TEXT;
                                                                          }
 {DOUBLEINVERTEDCOMMA}                                                    { return DOUBLEINVERTEDCOMMA; }
-"<!DOCTYPE html>"{NEWLINE}                                               { }
+"<!DOCTYPE"                                                             { return PREAMBLE;}
 .                                                                        { }
 
 %%
