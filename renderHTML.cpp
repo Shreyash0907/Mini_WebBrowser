@@ -34,7 +34,7 @@ using Time = std::chrono::system_clock::time_point;
 
 class MainWindow : public QWidget {
 public:
-
+    QTabWidget *tabWidget;
     MainWindow() {
         tabWidget = new QTabWidget(this);
         tabWidget->setWindowTitle("My Browser");
@@ -52,15 +52,7 @@ public:
         historyTabButton->setFixedHeight(40);
         connect(addTabButton, &QPushButton::clicked, this, &MainWindow::addTab);
         connect(historyTabButton, &QPushButton::clicked, this, &MainWindow::showHistory);
-        QPushButton *backButton = new QPushButton("<-",this);
-        backButton->setFixedSize(40, 40); // Set a small size for the button
-
-        connect(backButton, &QPushButton::clicked, this, &MainWindow::goBack);
-
-        QPushButton *forwardButton = new QPushButton("->",this);
-        forwardButton->setFixedSize(40, 40); // Set a small size for the button
-
-        connect(forwardButton, &QPushButton::clicked, this, &MainWindow::goForward);
+        
 
 
         lineEdit = new QLineEdit(this);
@@ -77,8 +69,6 @@ public:
 
         // Create a horizontal layout for the button and line edit
         QHBoxLayout *hLayout = new QHBoxLayout();
-        hLayout->addWidget(backButton);
-        hLayout->addWidget(forwardButton);
         hLayout->addWidget(lineEdit);
         hLayout->addWidget(addTabButton);
         hLayout->addWidget(historyTabButton);
@@ -122,17 +112,18 @@ public:
     }
 
     void goBack(){
-        int curr = tabWidget->currentIndex();
-        string title = tabWidget->tabText(curr).toStdString();
+    //     int curr = tabWidget->currentIndex();
+    //     string title = tabWidget->tabText(curr).toStdString();
 
-        if(!undo[title].empty()){
-            tabWidget->removeTab(curr);
-        }
+    //     if(!undo.empty()){
+    //         tabWidget->removeTab(curr);
+    //         // tabWidget->insertTab(curr, undo.top(), title);
+    //     }
     }
 
     void goForward(){
-        int curr = tabWidget->currentIndex();
-        string title = tabWidget->tabText(curr).toStdString();
+    //     int curr = tabWidget->currentIndex();
+    //     string title = tabWidget->tabText(curr).toStdString();
 
     }
     
@@ -250,12 +241,12 @@ private slots:
     }
 
 private:
-    QTabWidget *tabWidget;
+    
     QLineEdit *lineEdit;
     QListWidget *listWidget;
     std::vector<std::pair<QString, pair<string,Time>>> tabMap;
     unordered_map<string,  string> urlMap;
-    map<string, stack<QWidget*> > undo, redo;
+    // stack<QWidget*> undo, redo;
 
 };
 
@@ -303,9 +294,69 @@ public:
 
         textEdit->setDocument(document);
         layout->addWidget(scrollArea);
+        QPushButton *undoButton = new QPushButton("Undo", this);
+        QPushButton *redoButton = new QPushButton("Redo", this);
+
+        connect(redoButton, &QPushButton::clicked, this, &RenderTabWidget::goForward);
+        connect(undoButton, &QPushButton::clicked, this, &RenderTabWidget::goBack);
+
+
+        // Create a horizontal layout for the buttons
+        QHBoxLayout *buttonLayout = new QHBoxLayout();
+        buttonLayout->addWidget(undoButton);
+        buttonLayout->addWidget(redoButton);
+
+        // Add the button layout to the main vertical layout
+        layout->addLayout(buttonLayout);
 
         setLayout(layout);
         }
+
+    stack<pair<RenderTabWidget*,string> > undo,redo;
+
+    void goForward(){
+        if(!redo.empty()){
+            // undo.push(redo.top());
+            RenderTabWidget* current = redo.top().first;
+            int curr = mainWindow->tabWidget->currentIndex();
+            string retrieveTitle = mainWindow->tabWidget->tabText(curr).toStdString();
+            RenderTabWidget* retrievedTab = static_cast<RenderTabWidget*>(mainWindow->tabWidget->widget(curr));
+            current->undo.push(make_pair(retrievedTab, retrieveTitle));
+            mainWindow->tabWidget->removeTab(curr);
+            string title = redo.top().second;
+            mainWindow->tabWidget->insertTab(curr, current, QString::fromStdString(title));
+            redo.pop();
+            cout<<title<<" redo title "<<endl;
+            cout<<retrieveTitle<<"  title "<<endl;
+        }
+        else{
+            int curr = mainWindow->tabWidget->currentIndex();
+            string retrieveTitle = mainWindow->tabWidget->tabText(curr).toStdString();
+            cout<<retrieveTitle<<"redo empty"<<endl;
+        }
+    }
+
+    void goBack(){
+        if(!undo.empty()){
+            RenderTabWidget* current = undo.top().first;
+            
+            int curr = mainWindow->tabWidget->currentIndex();
+            string retrieveTitle = mainWindow->tabWidget->tabText(curr).toStdString();
+            RenderTabWidget* retrievedTab = static_cast<RenderTabWidget*>(mainWindow->tabWidget->widget(curr));
+            current->redo.push(make_pair(retrievedTab, retrieveTitle));
+            mainWindow->tabWidget->removeTab(curr);
+            string title = undo.top().second;
+            mainWindow->tabWidget->insertTab(curr, current, QString::fromStdString(title));
+            undo.pop();
+            cout<<title<<" undo title "<<endl;
+            cout<<retrieveTitle<<" current titel"<<endl;
+        }
+        else{
+            int curr = mainWindow->tabWidget->currentIndex();
+            string retrieveTitle = mainWindow->tabWidget->tabText(curr).toStdString();
+            cout<<retrieveTitle<<"undo empty"<<endl;
+        }
+    }
 
     static string getTitle(Node* temp){
         if(temp == NULL){

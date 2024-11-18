@@ -547,13 +547,13 @@ void MainWindow::renderAnchor(string URL){
             URL = "dfsd";
         }
         cout<<URL<<"  ";
-        FetchHtmlWorker *worker = new FetchHtmlWorker(child1ToChild2[1],  parentToChild1[0]);
+        static FetchHtmlWorker *worker = new FetchHtmlWorker(child1ToChild2[1],  parentToChild1[0]);
         QThread *workerThread = new QThread;
 
         worker->moveToThread(workerThread);  
         connect(workerThread, &QThread::started, worker, &FetchHtmlWorker::run);
 
-        NetworkWorker *worker1 = new NetworkWorker(child1ToChild2[0], child2ToParent[1]);
+        static NetworkWorker *worker1 = new NetworkWorker(child1ToChild2[0], child2ToParent[1]);
         QThread *workerThread1 = new QThread();
 
         worker1->moveToThread(workerThread1);
@@ -590,11 +590,14 @@ void MainWindow::renderAnchor(string URL){
         tabWidget->addTab( newTab, qtitle);
 
         int curr = tabWidget->currentIndex();
+
+        RenderTabWidget* retrievedTab = static_cast<RenderTabWidget*>(tabWidget->widget(curr));
+        string retrievedTitle = tabWidget->tabText(curr).toStdString();
         tabWidget->removeTab(curr);
         tabWidget->insertTab( curr,newTab, qtitle);
         tabWidget->setCurrentIndex(curr);
         cout<<curr<<" current index"<<std::endl;
-        undo[title].push(newTab);
+        newTab->undo.push(make_pair(retrievedTab,retrievedTitle));
         tabWidget->setProperty("url", QVariant(QUrl(QString::fromStdString(URL))));
         urlMap[title] = URL;
         refereshHistoryTab();
